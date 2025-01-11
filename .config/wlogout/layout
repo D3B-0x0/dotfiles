@@ -19,7 +19,7 @@
 {
     "label" : "shutdown",
     "action" : "systemctl poweroff || loginctl poweroff",
-    "text" : "power_settings_new",
+    "text" : "shutdown",
     "keybind" : "s"
 }
 {
@@ -31,6 +31,6 @@
 {
     "label" : "reboot",
     "action" : "systemctl reboot || loginctl reboot",
-    "text" : "restart_alt",
+    "text" : "restart",
     "keybind" : "r"
 }
