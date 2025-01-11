@@ -1,0 +1,11 @@
+.config/ags/node_modules
+.config/ags/scss/_musicmaterial.scss
+.config/ags/scss/_musicwal.scss
+.config/ags/scss/_material.scss
+/cache
+id_ed25519
+id_ed25519.pub
+
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
