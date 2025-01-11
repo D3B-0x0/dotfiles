@@ -45,7 +45,7 @@ Welcome to my **dotfiles repository**! A collection of meticulously crafted conf
 
 1. Clone this repository:   
    ```bash
-   git clone git@github.com:kalidude69/dotfiles.git && python install.py
+   git clone https://github.com/Kalidude69/dotfiles.git && python install.py
    ```
 
 2. Check **package.txt** for a list of all packages and dependencies from my personal Arch system.  
