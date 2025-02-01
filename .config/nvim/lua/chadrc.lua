@@ -39,7 +39,7 @@ local options = {
       },
 
   term = {
-    winopts = { number = false, relativenumber = true, },
+    winopts = { number = true, relativenumber = true, },
     sizes = { sp = 0.3, vsp = 0.2, ["bo sp"] = 0.3, ["bo vsp"] = 0.2 },
     float = {
       relative = "editor",
@@ -59,8 +59,34 @@ local options = {
   },
 
   mason = { cmd = true, pkgs = {} },
-}
 
+
+  nvdash = {
+     load_on_startup = true,
+
+     header = {
+       "                            ",
+       "     ▄▄         ▄ ▄▄▄▄▄▄▄   ",
+       "   ▄▀███▄     ▄██ █████▀    ",
+       "   ██▄▀███▄   ███           ",
+       "   ███  ▀███▄ ███           ",
+       "   ███    ▀██ ███           ",
+       "   ███      ▀ ███           ",
+       "   ▀██ █████▄▀█▀▄██████▄    ",
+       "     ▀ ▀▀▀▀▀▀▀ ▀▀▀▀▀▀▀▀▀▀   ",
+       "                            ",
+       "     Powered By  eovim    ",
+       "                            ",
+     },
+
+     buttons = {
+       { txt = "  Find File", keys = "Spc f f", cmd = "Telescope find_files" },
+       { txt = "  Recent Files", keys = "Spc f o", cmd = "Telescope oldfiles" },
+       { txt = "  Change Theme", keys = "Spc t h", cmd = "Telescope changetheme" }
+       -- more... check nvconfig.lua file for full list of buttons
+     },
+   }
+}
 
 local status, chadrc = pcall(require, "chadrc")
 return vim.tbl_deep_extend("force", options, status and chadrc or {})
