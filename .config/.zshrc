@@ -89,12 +89,12 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 # Your aliases
 alias vim='nvim'
+
 alias c='clear'
 alias pamcan=pacman
-alias vim=nvim
 alias ins='sudo pacman -S'
-alias openfile="fzf | xargs -o xdg-open"
 alias gsc="git status"
+alias of='nvim $(fzf --preview "cat {}" --height 40% --reverse)'
 alias minecraft="java -jar ~/Downloads/minecraft/TLauncher.v10/TLauncher.jar"
 alias term='kitty'
 alias ls='eza --icons=always'
@@ -114,6 +114,16 @@ ZSH_HIGHLIGHT_STYLES[function]='fg=blue,bold'
 ZSH_HIGHLIGHT_STYLES[command-substitution]='fg=magenta'
 ZSH_HIGHLIGHT_STYLES[path]='fg=cyan'
 
+
+# yt-x theming options
+export YT_X_FZF_OPTS=$FZF_DEFAULT_OPTS'
+--color=fg:#cdd6f4,fg+:#cdd6f4,bg:#1e1e2e,bg+:#313244
+--color=hl:#b4befe,hl+:#cba6f7,info:#f9e2af,marker:#b4befe
+--color=prompt:#f5c2e7,spinner:#cba6f7,pointer:#cba6f7,header:#b4befe
+--color=border:#313244,label:#f38ba8,query:#f9e2af
+--border="rounded" --border-label="" --preview-window="border-rounded" --prompt="> "
+--marker=">" --pointer="◆" --separator="─" --scrollbar="│"'
+
 # Auto-suggestions style (more fish-like)
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
@@ -128,6 +138,5 @@ export PATH="/home/deb/.spicetify:$PATH"
 function show_ghosts() {
     echo -e "  \e[31m󰊠 \e[35m󰊠 \e[32m󰊠 \e[34m󰊠 \e[36m󰊠 \e[37m󰊠 \e[0m"
 }
-
 # Add this at the end of your .zshrc after all other configurations
 show_ghosts
