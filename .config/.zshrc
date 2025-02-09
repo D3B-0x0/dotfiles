@@ -81,15 +81,14 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' verbose yes
-zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
-zstyle ':completion:*:messages' format '%F{purple}-- %d --%f'
-zstyle ':completion:*:warnings' format '%F{red}-- no matches found --%f'
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
-zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+zstyle ':completion:*:descriptions' format '%F{#f5c2e7}-- %d --%f'   # Mauve
+zstyle ':completion:*:messages' format '%F{#cba6f7}-- %d --%f'       # Lavender
+zstyle ':completion:*:warnings' format '%F{#f38ba8}-- no matches found --%f'  # Pink
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color=always $realpath'
 
 # Your aliases
 alias vim='nvim'
-
 alias c='clear'
 alias pamcan=pacman
 alias ins='sudo pacman -S'
@@ -130,7 +129,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 
 #Setting some env varibles
 export EDITOR="nvim"
-export TERMINAL="kitty"
+export TERMINAL="wezterm"
 export PATH="/home/deb/.spicetify:$PATH"
 #export MANPAGER="nvim -c 'set ft=man' -"
 
