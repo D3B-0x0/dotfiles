@@ -1,11 +1,27 @@
+# yt-dlp configuration file
 
+# Format selection:
+# - Prioritize best video up to 720p with AVC1 codec and best audio.
+# - Fallback to best available format if specified formats aren't available.
+-f "bestvideo[vcodec^=avc1][height<=720]+bestaudio/best[vcodec^=avc1][height<=720]/best"
 
--f bestvideo[vcodec^=avc1][height=1080]+bestaudio/best[vcodec^=avc1][height=1080]/bestvideo[vcodec^=avc1][height=720]+bestaudio/best[vcodec^=avc1][height=720]/best
+# Embed chapters, metadata, thumbnail, and subtitles:
 --embed-chapters
---sponsorblock-mark all
 --embed-metadata
 --embed-thumbnail
---add-metadata
 --embed-subs
 --sub-lang en
+
+# SponsorBlock integration:
+--sponsorblock-mark all
+
+# Merge output into MKV format:
 --merge-output-format mkv
+
+# Additional options for efficient downloading:
+--no-playlist  # Download only the video, not the entire playlist.
+--limit-rate 100K  # Limit download rate to 100K to prevent buffering issues.
+--buffer-size 16K  # Set buffer size to 16K for handling slower connections.
+--retries 3  # Retry up to 3 times in case of download failures.
+--hls-use-mpegts  # Use the mpegts container for HLS videos to reduce the chance of file corruption if download is interrupted.
+
