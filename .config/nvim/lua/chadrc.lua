@@ -87,6 +87,8 @@ local options = {
      },
    }
 }
+require("configs.luasnip") -- Load LuaSnip Config
+
 
 local status, chadrc = pcall(require, "chadrc")
 return vim.tbl_deep_extend("force", options, status and chadrc or {})

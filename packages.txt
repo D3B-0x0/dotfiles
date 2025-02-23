@@ -52,18 +52,6 @@ aribb24 1.0.3-4.1
 ark 24.12.2-1.1
 asciinema 3.0.0rc.3-2
 at-spi2-core 2.54.1-1.1
-athena-config 1.0.6-8
-athena-cyan-base 7.938493c-1
-athena-cyber-hub 23.fab05f4-1
-athena-grub-theme 27.efe1abb-1
-athena-keyring 1.0.0-2
-athena-mirrorlist 1.0.1-1
-athena-nighttab 1.0.0-2
-athena-powershell-config 1.0.0-1
-athena-theme-tweak 1.0.8-3
-athena-tmux-config 1.0.0-1
-athena-vim-config 1.0.0-1
-athena-welcome 20.8ec0c3e-3
 atkmm 2.28.4-1.1
 attica 6.10.0-1.1
 attr 2.5.2-1.1
@@ -71,7 +59,6 @@ audiofile 0.3.6-9.2
 audit 4.0.3-1.1
 autoconf 2.72-1
 automake 1.17-1
-autowordlists 855.3de9770-1
 avahi 1:0.8+r194+g3f79789-3.1
 awesome-terminal-fonts 1.1.0-5
 axel 2.17.14-1.1
@@ -199,8 +186,6 @@ cups 2:2.4.11-2.1
 cups-filters 2.0.1-2.1
 cups-pk-helper 0.2.7-2.1
 curl 8.12.0-3
-cyber-toolkit 19.7ec0052-1
-cyberchef-electron 10.19.4-1
 cython 3.0.11-2.1
 dart-sass 1.83.4-1.1
 dav1d 1.5.1-1.1
@@ -474,7 +459,6 @@ hwdata 0.392-1
 hwdetect 2024.07.29.0933-1
 hwinfo 23.3-1.1
 hwloc 2.11.2-1.1
-hydra 9.5-2
 hyphen 2.8.8-6.1
 hyprcursor 0.1.11-3.1
 hyprgraphics 0.1.2-1.1
@@ -2002,7 +1986,6 @@ sdl_net 1.2.8-6.1
 sdl_sound 1.0.3-12.1
 sdl_ttf 2.0.11-7.1
 seatd 0.9.1-1.1
-security-wordlist 23.a090dff-1
 sed 4.9-3.2
 semver 7.7.1-1
 serd 0.32.4-1.1
