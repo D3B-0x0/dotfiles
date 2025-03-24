@@ -1,0 +1,97 @@
+export EDITOR="nvim"
+export VISUAL="nvim"
+export TERMINAL="wezterm"
+export BROWSER="firefox"
+
+# Path additions
+export PATH="/home/ghost/.spicetify:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.npm-global/bin:$PATH"
+
+# Programming languages
+export GOPATH="$HOME/go"
+export PATH="$GOPATH/bin:$PATH"
+export PYTHONPATH="$HOME/.local/lib/python3.11/site-packages:$PYTHONPATH"
+export NODE_PATH="$HOME/.npm-global/lib/node_modules"
+export RUSTUP_HOME="$HOME/.rustup"
+export CARGO_HOME="$HOME/.cargo"
+
+# XDG Base Directory
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+# Application specific
+export WGETRC=""
+export DOCKER_CONFIG="$HOME/.docker"
+export KUBECTL_COMMAND="kubectl"
+export AWS_CONFIG_FILE="$HOME/.aws/config"
+export AWS_SHARED_CREDENTIALS_FILE="$HOME/.aws/credentials"
+
+# Locale settings
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+export LANGUAGE="en_US.UTF-8"
+
+# Colors and theming
+export TERM="xterm-256color"
+export COLORTERM="truecolor"
+export CLICOLOR=1
+export LSCOLORS="ExGxBxDxCxEgEdxbxgxcxd"
+export LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
+
+# FZF customization
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_DEFAULT_OPTS="
+--height 40%
+--layout=reverse
+--border rounded
+--prompt='❯ '
+--pointer='▶'
+--marker='✓'
+--color=fg:#cdd6f4,bg:#1e1e2e,hl:#f38ba8
+--color=fg+:#cdd6f4,bg+:#313244,hl+:#f38ba8
+--color=info:#cba6f7,prompt:#94e2d5,pointer:#f5c2e7
+--color=marker:#abe9b3,spinner:#f5c2e7,header:#f38ba8"
+
+# yt-x theming
+export YT_X_FZF_OPTS=$FZF_DEFAULT_OPTS'
+--color=fg:#cdd6f4,fg+:#cdd6f4,bg:#1e1e2e,bg+:#313244
+--color=hl:#b4befe,hl+:#cba6f7,info:#f9e2af,marker:#b4befe
+--color=prompt:#f5c2e7,spinner:#cba6f7,pointer:#cba6f7,header:#b4befe
+--border="rounded" --border-label="" --preview-window="border-rounded" --prompt="> "
+--marker=">" --pointer="◆" --separator="─" --scrollbar="│"'
+
+# Development tools
+export GIT_EDITOR="nvim"
+export COMPOSE_DOCKER_CLI_BUILD=1
+export DOCKER_BUILDKIT=1
+export ANSIBLE_NOCOWS=1  # Disable Ansible cow ASCII art
+
+# Less configuration
+export LESS="-R --mouse --wheel-lines=3"
+export LESS_TERMCAP_mb=$'\E[1;31m'     # begin blink
+export LESS_TERMCAP_md=$'\E[1;36m'     # begin bold
+export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
+export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+
+# History settings
+export HISTSIZE=10000
+export SAVEHIST=10000
+export HISTFILE="$HOME/.zsh_history"
+export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
+
+# Application behavior
+export WORDCHARS='*?[]~=&;!#$%^(){}<>'
+export COMPLETION_WAITING_DOTS="true"
+export DISABLE_UPDATE_PROMPT="true"
+export DISABLE_AUTO_TITLE="true"
+
+# Security
+export GPG_TTY=$(tty)
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"

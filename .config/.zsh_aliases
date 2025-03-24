@@ -1,0 +1,36 @@
+# Aliases
+alias vim='nvim'
+alias c='clear'
+alias pamcan=pacman
+alias ins='sudo pacman -S'
+alias uninst='sudo pacman -Rns'
+alias update='sudo pacman -Syu'
+alias gsc="git status"
+alias ga="git add"
+alias gc="git commit -m"
+alias gp="git push"
+alias gl="git pull"
+alias of='nvim $(fzf --preview "cat {}" --height 40% --reverse)'
+alias minecraft="java -jar ~/Downloads/minecraft/TLauncher.v10/TLauncher.jar"
+alias term='kitty'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias mkdir='mkdir -p'
+alias df='df -h'
+alias free='free -h'
+alias more='less'
+
+# eza aliases
+alias ls='eza --icons=always'
+alias ll='eza -lh --icons=always'
+alias la='eza -lah --icons=always'
+alias lt='eza --tree --icons=always'
+alias l.='eza -a | grep "^\."'
+
+# Modern alternatives
+alias cat='bat'
+alias btop='btop --utf-force'
+alias man='batman'
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'

@@ -1,0 +1,15 @@
+{
+  "features": {
+    "edit_prediction_provider": "copilot"
+  },
+  "vim_mode": true,
+  "ui_font_size": 17,
+  "buffer_font_size": 19,
+  "ui_font_family": "Gabarito", // Google's interface font
+  "buffer_font_family": "JetBrainsMono Nerd Font", // Coding font
+  "theme": {
+    "mode": "system",
+    "light": "Catppuccin Latte",
+    "dark": "Catppuccin Mocha"
+  }
+}

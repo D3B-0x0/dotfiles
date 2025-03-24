@@ -1,14 +1,14 @@
 export const quickLaunchItems = [
     {
-        "name": "GitHub",
-        "command": "xdg-open 'https://github.com/ $"
+        "name": "GitHub + Files×2",
+        "command": "github-desktop & nautilus --new-window & nautilus --new-window &"
     },
     {
-        "name": "Terminal",
-        "command": "foot &"
+        "name": "Terminal×2",
+        "command": "foot & foot &"
     },
     {
-        "name": "Discord",
-        "command": "discord $"
+        "name": "Discord + Youtube + Github",
+        "command": "xdg-open 'https://discord.com/app' && xdg-open 'https://youtube.com/' && xdg-open 'https://github.com/' &"
     },
 ]

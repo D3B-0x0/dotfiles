@@ -13,7 +13,7 @@ config.font_size = 14
 config.window_decorations = "NONE"
 config.window_background_opacity = 1
 
-config.leader = { key = "q", mods = "CTRL", timeout_milliseconds = 2500 }
+config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 2500 }
 config.keys = {
   {
     mods = "LEADER",

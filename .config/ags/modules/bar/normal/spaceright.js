@@ -8,65 +8,6 @@ const { execAsync } = Utils;
 import Indicator from '../../../services/indicator.js';
 import { StatusIcons } from '../../.commonwidgets/statusicons.js';
 import { Tray } from "./tray.js";
-import { MaterialIcon } from '../../.commonwidgets/materialicon.js';
-import Battery from 'resource:///com/github/Aylur/ags/service/battery.js';
-import { AnimatedCircProg } from "../../.commonwidgets/cairo_circularprogress.js";
-const { Box, Label, Overlay, Revealer } = Widget;
-
-
-const BarBatteryProgress = () => {
-    const _updateProgress = (circprog) => { // Set circular progress value
-        circprog.css = `font-size: ${Math.abs(Battery.percent)}px;`
-
-        circprog.toggleClassName('bar-batt-circprog-low', Battery.percent <= userOptions.battery.low);
-        circprog.toggleClassName('bar-batt-circprog-full', Battery.charged);
-    }
-    return AnimatedCircProg({
-        className: 'bar-batt-circprog',
-        vpack: 'center', hpack: 'center',
-        extraSetup: (self) => self
-            .hook(Battery, _updateProgress)
-        ,
-    })
-}
-
-const BarBattery = () => Box({
-    className: 'spacing-h-4 bar-batt-txt',
-    children: [
-        Revealer({
-            transitionDuration: userOptions.animations.durationSmall,
-            revealChild: false,
-            transition: 'slide_right',
-            child: MaterialIcon('bolt', 'norm', { tooltipText: "Charging" }),
-            setup: (self) => self.hook(Battery, revealer => {
-                self.revealChild = Battery.charging;
-            }),
-        }),
-        Label({
-            className: 'txt-smallie',
-            setup: (self) => self.hook(Battery, label => {
-                label.label = `${Number.parseFloat(Battery.percent.toFixed(1))}%`;
-            }),
-        }),
-        Overlay({
-            child: Widget.Box({
-                vpack: 'center',
-                className: 'bar-batt',
-                homogeneous: true,
-                children: [
-                    MaterialIcon('battery_full', 'small'),
-                ],
-                setup: (self) => self.hook(Battery, box => {
-                    box.toggleClassName('bar-batt-low', Battery.percent <= userOptions.battery.low);
-                    box.toggleClassName('bar-batt-full', Battery.charged);
-                }),
-            }),
-            overlays: [
-                BarBatteryProgress(),
-            ]
-        }),
-    ]
-});
 
 const SeparatorDot = () => Widget.Revealer({
     transition: 'slide_left',
@@ -114,15 +55,6 @@ export default (monitor = 0) => {
     const indicatorArea = SpaceRightDefaultClicks(Widget.Box({
         children: [
             SeparatorDot(),
-            Revealer({
-                transitionDuration: userOptions.animations.durationSmall,
-                revealChild: false,
-                transition: 'slide_right',
-                child: BarBattery(),
-                setup: (self) => self.hook(Battery, revealer => {
-                    self.revealChild = Battery.available;
-                }),
-            }),
             barStatusIcons
         ],
     }));

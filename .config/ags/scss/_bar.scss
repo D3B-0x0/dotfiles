@@ -14,12 +14,7 @@ $bar_ws_width_focus_active: 2.045rem;
 
 .bar-bg {
     background-color: $layer0;
-    //background-color: rgba(245, 40, 145, 0);
     min-height: 2.727rem;
-    padding: 0rem 1.273rem;
-    border-bottom-left-radius: 10rem;
-    border-bottom-right-radius: 10rem;
-
 }
 
 .bar-bg-focus {
@@ -45,8 +40,7 @@ $bar_ws_width_focus_active: 2.045rem;
 }
 
 .bar-group {
-    //background-color: $layer1;
-    opacity: 1; // Just to not have empty css rule
+    background-color: $layer1;
 }
 
 .bar-group-pad {
@@ -67,9 +61,8 @@ $bar_ws_width_focus_active: 2.045rem;
 }
 
 .bar-group-standalone {
-    //@include bar-group-rounding;
-    //-gtk-outline-radius: 1.364rem;
-    opacity: 1; // Just to not have empty css rule
+    @include bar-group-rounding;
+    -gtk-outline-radius: 1.364rem;
 }
 
 .bar-group-round {

@@ -1,4 +1,28 @@
-set selection-clipboard clipboard
-map D set "first-page-column 1:1"
-map <C-d> set "first-page-column 1:2"
+# ~/.config/zathura/zathurarc
 include catppuccin-mocha
+
+# Set font to JetBrains Mono with size 12
+set font "JetBrains Mono 11"
+
+
+# Enable continuous scrolling
+set continuous true
+
+# Adjust zoom settings
+set zoom-step 10
+set adjust-open best-fit
+
+# Show status bar
+set statusbar-visible true
+
+
+# Highlight color for search results
+set highlight-color "#f38ba8"
+set highlight-active-color "#f38ba8"
+
+# Key bindings
+map <C-n> navigate next
+map <C-p> navigate previous
+map <C-d> scroll down
+map <C-u> scroll up
+

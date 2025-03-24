@@ -40,7 +40,7 @@ export const Bar = async (monitor = 0) => {
         children: children,
     });
     const normalBarContent = Widget.CenterBox({
-        // className: 'bar-bg',
+        className: 'bar-bg',
         setup: (self) => {
             const styleContext = self.get_style_context();
             const minHeight = styleContext.get_property('min-height', Gtk.StateFlags.NORMAL);
@@ -48,7 +48,7 @@ export const Bar = async (monitor = 0) => {
         },
         startWidget: (await WindowTitle(monitor)),
         centerWidget: Widget.Box({
-            className: 'bar-bg', // bar-bg
+            className: 'spacing-h-4',
             children: [
                 SideModule([Music()]),
                 Widget.Box({

@@ -25,21 +25,45 @@ function exists(widget) {
     return widget !== null;
 }
 
+function processNotificationBody(body, appEntry) {
+    // Only process Chrome/Chromium notifications
+    if (appEntry?.toLowerCase().includes('chrome')) {
+        // Remove the first line
+        return body.split('\n\n').slice(1).join('\n\n');
+    }
+    return body;
+}
+
 const getFriendlyNotifTimeString = (timeObject) => {
     const messageTime = GLib.DateTime.new_from_unix_local(timeObject);
     const oneMinuteAgo = GLib.DateTime.new_now_local().add_seconds(-60);
     if (messageTime.compare(oneMinuteAgo) > 0)
-        return 'Now';
+        return getString('Now');
     else if (messageTime.get_day_of_year() == GLib.DateTime.new_now_local().get_day_of_year())
         return messageTime.format(userOptions.time.format);
     else if (messageTime.get_day_of_year() == GLib.DateTime.new_now_local().get_day_of_year() - 1)
-        return 'Yesterday';
+        return getString('Yesterday');
     else
         return messageTime.format(userOptions.time.dateFormat);
 }
 
 const NotificationIcon = (notifObject) => {
-    // { appEntry, appIcon, image }, urgency = 'normal'
+
+    if (notifObject.hints?.image_path?.deepUnpack) {
+        const imagePath = notifObject.hints.image_path.deepUnpack();
+        return Box({
+            valign: Gtk.Align.CENTER,
+            hexpand: false,
+            className: 'notif-icon',
+            css: `
+                background-image: url("${imagePath}");
+                background-size: auto 100%;
+                background-repeat: no-repeat;
+                background-position: center;
+            `,
+        });
+    }
+
     if (notifObject.image) {
         return Box({
             valign: Gtk.Align.CENTER,
@@ -168,7 +192,7 @@ export default ({
             justify: Gtk.Justification.LEFT,
             maxWidthChars: 1,
             truncate: 'end',
-            label: notifObject.body.split("\n")[0],
+            label: processNotificationBody(notifObject.body, notifObject.appEntry).split("\n")[0]
         }),
     });
     const notifTextExpanded = Revealer({
@@ -187,7 +211,7 @@ export default ({
                     justify: Gtk.Justification.LEFT,
                     maxWidthChars: 1,
                     wrap: true,
-                    label: notifObject.body,
+                    label: processNotificationBody(notifObject.body, notifObject.appEntry)
                 }),
                 Box({
                     className: 'notif-actions spacing-h-5',
@@ -198,7 +222,7 @@ export default ({
                             onClicked: () => destroyWithAnims(),
                             setup: setupCursorHover,
                             child: Label({
-                                label: 'Close',
+                                label: getString('Close'),
                             }),
                         }),
                         ...notifObject.actions.map(action => Widget.Button({
@@ -460,4 +484,3 @@ export default ({
     })
     return wholeThing;
 }
-

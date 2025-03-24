@@ -8,9 +8,9 @@ import { fileExists } from '../modules/.miscutils/files.js';
 
 const PROVIDERS = Object.assign({ // There's this list hmm https://github.com/zukixa/cool-ai-stuff/
     'openai': {
-        'name': 'OpenAI (GPT-3.5-turbo)',
+        'name': 'OpenAI',
         'logo_name': 'openai-symbolic',
-        'description': 'Official OpenAI API.\nPricing: Free for the first $5 or 3 months, whichever is less.',
+        'description': getString('Official OpenAI API.\nPricing: Free for the first $5 or 3 months, whichever is less.'),
         'base_url': 'https://api.openai.com/v1/chat/completions',
         'key_get_url': 'https://platform.openai.com/api-keys',
         'key_file': 'openai_key.txt',
@@ -19,46 +19,56 @@ const PROVIDERS = Object.assign({ // There's this list hmm https://github.com/zu
     'ollama': {
         'name': 'Ollama (Llama 3)',
         'logo_name': 'ollama-symbolic',
-        'description': 'Official Ollama API.\nPricing: Free.\nNeeds ollama socket running on your computer',
+        'description': getString('Official Ollama API.\nPricing: Free.'),
         'base_url': 'http://localhost:11434/v1/chat/completions',
         'key_get_url': 'it\'s just ollama',
         'key_file': 'ollama_key.txt',
         'model': 'llama3:instruct',
     },
     'openrouter': {
-        'name': 'OpenRouter (Mistral-7b)',
+        'name': 'OpenRouter (Llama-3-70B)',
         'logo_name': 'openrouter-symbolic',
-        'description': 'A unified interface for LLMs',
+        'description': getString('A unified interface for LLMs'),
         'base_url': 'https://openrouter.ai/api/v1/chat/completions',
         'key_get_url': 'https://openrouter.ai/keys',
         'key_file': 'openrouter_key.txt',
-        'model': 'mistralai/mistral-7b-instruct:free',
+        'model': 'meta-llama/llama-3-70b-instruct',
     },
     'oxygen4o': {
         'name': 'Oxygen (GPT-4o)',
         'logo_name': 'ai-oxygen-symbolic',
-        'description': 'An API from Tornado Softwares\nPricing: Free: 100/day\nRequires you to join their Discord for a key',
+        'description': getString('An API from Tornado Softwares\nPricing: Free: 100/day\nRequires you to join their Discord for a key'),
         'base_url': 'https://app.oxyapi.uk/v1/chat/completions',
         'key_get_url': 'https://discord.com/invite/kM6MaCqGKA',
         'key_file': 'oxygen_key.txt',
         'model': 'gpt-4o',
+    },
+    'zukijourney': {
+        'name': 'zukijourney (GPT-3.5)',
+        'logo_name': 'ai-zukijourney',
+        'description': getString("An API from @zukixa on GitHub.\nNote: Keys are IP-locked so it's buggy sometimes\nPricing: Free: 10/min, 800/day.\nRequires you to join their Discord for a key"),
+        'base_url': 'https://zukijourney.xyzbot.net/v1/chat/completions',
+        'key_get_url': 'https://discord.com/invite/Y4J6XXnmQ6',
+        'key_file': 'zuki_key.txt',
+        'model': 'gpt-3.5-turbo',
     },
 }, userOptions.sidebar.ai.extraGptModels)
 
 // Custom prompt
 const initMessages =
     [
-        { role: "user", content: "You are an assistant on a sidebar of a Wayland Linux desktop. Please always use a casual tone when answering your questions, unless requested otherwise or making writing suggestions. These are the steps you should take to respond to the user's queries:\n1. If it's a writing- or grammar-related question or a sentence in quotation marks, Please point out errors and correct when necessary using underlines, and make the writing more natural where appropriate without making too major changes. If you're given a sentence in quotes but is grammatically correct, explain briefly concepts that are uncommon.\n2. If it's a question about system tasks, give a bash command in a code block with brief explanation.\n3. Otherwise, when asked to summarize information or explaining concepts, you are should use bullet points and headings. For mathematics expressions, you *have to* use LaTeX within a code block with the language set as \"latex\". \nNote: Use casual language, be short, while ensuring the factual correctness of your response. If you are unsure or don’t have enough information to provide a confident answer, simply say “I don’t know” or “I’m not sure.”. \nThanks!", },
+        { role: "user", content: getString("You are an assistant on a sidebar of a Wayland Linux desktop. Please always use a casual tone when answering your questions, unless requested otherwise or making writing suggestions. These are the steps you should take to respond to the user's queries:\n1. If it's a writing- or grammar-related question or a sentence in quotation marks, Please point out errors and correct when necessary using underlines, and make the writing more natural where appropriate without making too major changes. If you're given a sentence in quotes but is grammatically correct, explain briefly concepts that are uncommon.\n2. If it's a question about system tasks, give a bash command in a code block with brief explanation.\n3. Otherwise, when asked to summarize information or explaining concepts, you are should use bullet points and headings. For mathematics expressions, you *have to* use LaTeX within a code block with the language set as \"latex\". \nNote: Use casual language, be short, while ensuring the factual correctness of your response. If you are unsure or don’t have enough information to provide a confident answer, simply say “I don’t know” or “I’m not sure.”. \nThanks!"), },
         { role: "assistant", content: "- Got it!", },
-        { role: "user", content: "\"He rushed to where the event was supposed to be hold, he didn't know it got calceled\"", },
-        { role: "assistant", content: "## Grammar correction\nErrors:\n\"He rushed to where the event was supposed to be __hold____,__ he didn't know it got calceled\"\nCorrection + minor improvements:\n\"He rushed to the place where the event was supposed to be __held____, but__ he didn't know that it got calceled\"", },
+        { role: "user", content: "\"He rushed to where the event was supposed to be hold, he didn't know it got canceled\"", },
+        { role: "assistant", content: "## Grammar correction\nErrors:\n\"He rushed to where the event was supposed to be __hold____,__ he didn't know it got canceled\"\nCorrection + minor improvements:\n\"He rushed to the place where the event was supposed to be __held____, but__ he didn't know that it got canceled\"", },
         { role: "user", content: "raise volume by 5%", },
-        { role: "assistant", content: "## Volume +5```bash\nwpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+\n```\nThis command uses the `wpctl` utility to adjust the volume of the default sink.", },
+        { role: "assistant", content: "## Volume +5\n```bash\nwpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+\n```\nThis command uses the `wpctl` utility to adjust the volume of the default sink.", },
         { role: "user", content: "main advantages of the nixos operating system", },
         { role: "assistant", content: "## NixOS advantages\n- **Reproducible**: A config working on one device will also work on another\n- **Declarative**: One config language to rule them all. Effortlessly share them with others.\n- **Reliable**: Per-program software versioning. Mitigates the impact of software breakage", },
         { role: "user", content: "whats skeumorphism", },
         { role: "assistant", content: "## Skeuomorphism\n- A design philosophy- From early days of interface designing- Tries to imitate real-life objects- It's in fact still used by Apple in their icons until today.", },
     ];
+
 Utils.exec(`mkdir -p ${GLib.get_user_state_dir()}/ags/user/ai`);
 
 class GPTMessage extends Service {
