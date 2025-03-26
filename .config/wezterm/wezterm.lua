@@ -10,11 +10,11 @@ end
 config.color_scheme = "Catppuccin Mocha"
 config.font = wezterm.font("JetBrainsMono Nerd Font")
 config.font_size = 14
-config.line_height = 1.2  -- Slightly increase line height for better spacing
-config.harfbuzz_features = { "calt=1", "liga=1", "clig=1" }  -- Enable ligatures
+config.line_height = 1.0  -- Slightly increase line height for better spacing
+--config.harfbuzz_features = { "calt=1", "liga=1", "clig=1" }  -- Enable ligatures
 
 config.window_decorations = "NONE"
-config.window_background_opacity = 0.7
+config.window_background_opacity = 1
 
 config.leader = { key = "q", mods = "CTRL", timeout_milliseconds = 2500 }
 config.keys = {
