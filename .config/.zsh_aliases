@@ -1,5 +1,5 @@
 # Aliases
-alias vim='nvim'
+alias v='nvim'
 alias c='clear'
 alias pamcan=pacman
 alias ins='sudo pacman -S'
@@ -7,12 +7,14 @@ alias uninst='sudo pacman -Rns'
 alias update='sudo pacman -Syu'
 alias gsc="git status"
 alias ga="git add"
+alias zed="zeditor"
 alias gc="git commit -m"
 alias gp="git push"
 alias gl="git pull"
+alias open='xdg-open'
 alias of='nvim $(fzf --preview "cat {}" --height 40% --reverse)'
 alias minecraft="java -jar ~/Downloads/minecraft/TLauncher.v10/TLauncher.jar"
-alias term='kitty'
+alias term='wezterm'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias mkdir='mkdir -p'
@@ -27,6 +29,13 @@ alias la='eza -lah --icons=always'
 alias lt='eza --tree --icons=always'
 alias l.='eza -a | grep "^\."'
 
+# fd aliases
+alias find='fd'  # Replace find with fd
+alias fdf='fd -t f'  # Find only files
+alias fdd='fd -t d'  # Find only directories
+alias fdh='fd -H'    # Include hidden files
+alias fda='fd -H -I' # Include hidden and ignored files
+
 # Modern alternatives
 alias cat='bat'
 alias btop='btop --utf-force'
@@ -34,3 +43,39 @@ alias man='batman'
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
+
+# ripgrep aliases
+alias rg='rg --smart-case'  # Case insensitive if pattern is lowercase
+alias rgf='rg --files-with-matches'  # Only show files with matches
+alias rgi='rg -i'  # Force case insensitive
+alias rgw='rg -w'  # Match whole words only
+alias rgl='rg -l'  # Only show filenames
+alias rgv='rg -v'  # Invert match
+alias rgc='rg --count'  # Show count of matches per file
+
+# Combined search aliases
+alias search='fd -H -E .git -E node_modules | rg'  # Search in files excluding .git and node_modules
+alias recent='fd -H -t f -d 2 --changed-within 24h'  # Find files modified in last 24 hours
+alias biggest='fd -H -t f -X du -sh | sort -rh | head -n 10'  # Find 10 biggest files
+
+# Additional useful aliases
+alias h='history | grep'  # Search command history
+alias ports='netstat -tulanp'  # Show active ports
+alias path='echo $PATH | tr ":" "\n"'  # Show PATH entries one per line
+alias ip='ip -c a'  # Show IP addresses in color
+alias weather='curl wttr.in'  # Show weather
+alias serve='python -m http.server'  # Start a simple HTTP server
+alias tree='eza --tree'  # Tree view using eza
+alias disk='du -sh * | sort -rh'  # Show directory sizes
+
+# Quick open with file type detection
+fo() {
+    file="$1"
+    case "$(file --mime-type -b "$file")" in
+        text/*) nvim "$file" ;;
+        image/*) feh "$file" ;;
+        video/*) mpv "$file" ;;
+        application/pdf) zathura "$file" ;;
+        *) xdg-open "$file" ;;
+    esac
+}
