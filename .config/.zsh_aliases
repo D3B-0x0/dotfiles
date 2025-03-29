@@ -79,3 +79,46 @@ fo() {
         *) xdg-open "$file" ;;
     esac
 }
+
+# Compiling program alias
+run() {
+    if [ -z "$1" ]; then
+        echo "Usage: run <filename>"
+        return 1
+    fi
+
+    file="$1"
+    ext="${file##*.}"
+    name="${file%.*}"
+
+    case "$ext" in
+        c)
+            echo "Compiling & Running C program..."
+            gcc -Wall -Wextra -pedantic -O2 "$file" -o  "$name" && "./$name"
+            ;;
+        cpp|cc|cxx)
+            echo "Compiling & Running C++ program..."
+            g++ -Wall -Wextra -pedantic -O2 -std=c++20 "$file" -o - "$name" && "./$name"
+            ;;
+        rs)
+            echo "Compiling & Running Rust program..."
+            cargo run
+            ;;
+        py)
+            echo "Running Python script..."
+            python3 "$file"
+            ;;
+        go)
+            echo "Compiling & Running Go program..."
+            go run "$file"
+            ;;
+        sh)
+            echo "Executing Shell script..."
+            bash "$file"
+            ;;
+        *)
+            echo "Unsupported file type: $ext"
+            return 1
+            ;;
+    esac
+}
