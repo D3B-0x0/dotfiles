@@ -231,8 +231,7 @@ install_packages() {
             print_error "Setup cancelled by user due to missing packages.sh script"
         }
         return
-        fi
-    }
+    fi
     
     gum style --foreground 117 "📋 Found packages script at: $(gum style --underline "$PACKAGES_SCRIPT")"
     chmod +x "$PACKAGES_SCRIPT"
