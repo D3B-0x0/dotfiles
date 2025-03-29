@@ -1,160 +1,97 @@
 #!/bin/bash
 
-# Get actual user's home directory
-USER_HOME=$(eval echo ~$SUDO_USER)
+# Get the actual user
+if [[ -n "$SUDO_USER" ]]; then
+    USER_HOME=$(eval echo ~$SUDO_USER)
+    USERNAME="$SUDO_USER"
+else
+    USER_HOME="$HOME"
+    USERNAME="$USER"
+fi
+
 DOTFILES_DIR="$USER_HOME/.dotfiles"
 CONFIG_DIR="$USER_HOME/.config"
 GITHUB_REPO="https://github.com/D3B-0x0/dotfiles.git"
 
-# Colors for output
+# Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 YELLOW='\033[0;33m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-print_status() {
-    echo -e "${BLUE}[INFO]${NC} $1"
-}
+print_status() { echo -e "${BLUE}[INFO]${NC} $1"; }
+print_success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
+print_error() { echo -e "${RED}[ERROR]${NC} $1"; }
+print_warning() { echo -e "${YELLOW}[WARNING]${NC} $1"; }
 
-print_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
-}
-
-print_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
-}
-
-print_warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
-}
-
-# Backup existing configs
+# Backup configs
 backup_configs() {
     local backup_dir="$USER_HOME/.config_backup_$(date +%Y%m%d_%H%M%S)"
-    print_status "Creating backup of existing configs in $backup_dir"
-
+    print_status "Backing up existing configs to $backup_dir"
     mkdir -p "$backup_dir"
-
-    local configs=(
-        "ags" "alacritty" "background" "bat" "btop" "cava"
-        "chrome-flags.conf" "code-flags.conf" "fastfetch" "fish"
-        "fontconfig" "foot" "fuzzel" "hypr" "hyprpanel" "kitty"
-        "mpv" "neofetch" "nvim" "qt5ct" "spicetify.bak"
-        "starship.toml" "thorium-flags.conf" "tmux" "wezterm"
-        "wlogout" "yazi" "yt-dlp" "yt-x" "zathura" "zed"
-        "zshrc.d"
-    )
-
-    for config in "${configs[@]}"; do
-        if [ -e "$CONFIG_DIR/$config" ]; then
-            mkdir -p "$backup_dir/$(dirname "$config")"  
-            mv -f "$CONFIG_DIR/$config" "$backup_dir/"
-            print_status "Backed up: $config"
-        fi
+    
+    for config in "$CONFIG_DIR"/*; do
+        [ -e "$config" ] && mv "$config" "$backup_dir/"
     done
 
     print_success "Backup completed"
 }
 
-# Clone dotfiles repository
+# Clone dotfiles repo
 clone_dotfiles() {
     if [ -d "$DOTFILES_DIR" ]; then
         print_warning "Dotfiles directory already exists!"
-        while true; do
-            read -r -p "Do you want to remove it and clone again? (y/n): " choice
-            choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]')
-
-            case "$choice" in
-                y) rm -rf "$DOTFILES_DIR"; break ;;
-                n) exit 1 ;;
-                *) echo "Invalid input, please enter y or n." ;;
-            esac
-        done
+        read -rp "Remove it and clone again? (y/n): " choice
+        case "$choice" in
+            y) rm -rf "$DOTFILES_DIR" ;;
+            n) return ;;
+        esac
     fi
 
-    print_status "Cloning dotfiles repository to $DOTFILES_DIR..."
-    sudo -u "$SUDO_USER" git clone "$GITHUB_REPO" "$DOTFILES_DIR"
-
+    print_status "Cloning dotfiles..."
+    sudo -u "$USERNAME" git clone "$GITHUB_REPO" "$DOTFILES_DIR"
+    
     if [ $? -eq 0 ]; then
-        print_success "Dotfiles cloned successfully"
+        print_success "Dotfiles cloned"
     else
-        print_error "Failed to clone repository!"
+        print_error "Failed to clone repo!"
         exit 1
     fi
 }
 
-# Copy dotfiles to .config
+# Install configs
 install_configs() {
     print_status "Installing config files..."
+    
+    # Ensure .config exists
+    sudo -u "$USERNAME" mkdir -p "$CONFIG_DIR"
 
-    sudo -u "$SUDO_USER" mkdir -p "$CONFIG_DIR"
+    # Use rsync to preserve permissions and ensure all files are copied
+    sudo -u "$USERNAME" rsync -av "$DOTFILES_DIR/.config/" "$CONFIG_DIR/"
 
-    local configs=(
-        "ags" "alacritty" "background" "bat" "btop" "cava"
-        "chrome-flags.conf" "code-flags.conf" "fastfetch" "fish"
-        "fontconfig" "foot" "fuzzel" "hypr" "hyprpanel" "kitty"
-        "mpv" "neofetch" "nvim" "qt5ct" "spicetify.bak"
-        "starship.toml" "thorium-flags.conf" "tmux" "wezterm"
-        "wlogout" "yazi" "yt-dlp" "yt-x" "zathura" "zed"
-        "zshrc.d"
-    )
-
-    for config in "${configs[@]}"; do
-        if [ -e "$DOTFILES_DIR/.config/$config" ]; then
-            sudo -u "$SUDO_USER" cp -r "$DOTFILES_DIR/.config/$config" "$CONFIG_DIR/"
-            print_status "Installed: $config"
-        else
-            print_warning "Source not found: $config"
-        fi
-    done
-
-    print_success "Config files installed successfully"
+    print_success "Configs installed!"
 }
 
-# Clean up downloaded repository
-cleanup() {
-    print_status "Cleaning up..."
-    rm -rf "$DOTFILES_DIR"
-    print_success "Cleanup completed"
-}
-
-# Main function for dotfiles installation
+# Main function
 install_dotfiles() {
-    print_status "Starting dotfiles installation..."
+    print_status "Starting dotfiles setup..."
 
     if ! command -v git &>/dev/null; then
         print_error "Git is not installed!"
         exit 1
     fi
 
-    while true; do
-        read -r -p "Do you want to backup existing configs? (y/n): " do_backup
-        do_backup=$(echo "$do_backup" | tr '[:upper:]' '[:lower:]')
-        case "$do_backup" in
-            y) backup_configs; break ;;
-            n) break ;;
-            *) echo "Invalid input, please enter y or n." ;;
-        esac
-    done
+    read -rp "Backup existing configs? (y/n): " do_backup
+    [[ "$do_backup" =~ ^[Yy]$ ]] && backup_configs
 
     clone_dotfiles
     install_configs
 
-    while true; do
-        read -r -p "Remove downloaded repository? (y/n): " do_cleanup
-        do_cleanup=$(echo "$do_cleanup" | tr '[:upper:]' '[:lower:]')
-        case "$do_cleanup" in
-            y) cleanup; break ;;
-            n) break ;;
-            *) echo "Invalid input, please enter y or n." ;;
-        esac
-    done
-
-    print_success "Dotfiles installation completed!"
+    print_success "Dotfiles installation complete!"
 }
 
-# Allow running as standalone script or being sourced
+# Run only if script is executed directly
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     install_dotfiles
 fi
