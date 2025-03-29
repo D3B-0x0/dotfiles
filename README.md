@@ -1,8 +1,6 @@
----
+# ✨ **Dotfiles Repository** ✨
 
-# 🌟 **Dotfiles Repository** 🌟
-
-Welcome to my **dotfiles repository**! A collection of meticulously crafted configurations infused with the cozy pastel vibes of the **Catppuccin colorscheme**. Whether you’re here to explore, clone, or find inspiration, this is your one-stop destination for a polished Linux setup. 
+Welcome to my **dotfiles repository**! A collection of meticulously crafted configurations infused with the cozy pastel vibes of the **Catppuccin colorscheme**. Whether you’re here to explore, clone, or find inspiration, this is your one-stop destination for a polished Linux setup.
 
 ---
 
@@ -32,75 +30,76 @@ Welcome to my **dotfiles repository**! A collection of meticulously crafted conf
 - **nwg-look**
 - **QT5ct**
 
-### **🖋️ Fonts & Icons**
+### **🔍 Fonts & Icons**
 - **JetBrains Mono Nerd Font** 🖥️
-- **Lexend Font** 📖
+- **Lexend Font** 💖
 - **Gabarito Font** ✨
-- **Twemogi Fonts** 🔤
+- **Twemogi Fonts** 🔠
 - Some **Font Awesome Nerd Fonts** & symbols 🦄 (can't remember all the names, but they’re cool 😜)
 
 ---
 
 ## **🚀 Quick Start**
 
-1. Clone this repository:   
-   ```bash
-   git clone https://github.com/Kalidude69/dotfiles.git && python install.py
-   ```
+### **One-Liner Installation**
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/D3B-0x0/dotfiles/main/install.sh)"
+```
 
-2. Check **package.txt** for a list of all packages and dependencies from my personal Arch system.  
-   - This ensures you have everything needed for a fully functional environment while keeping track of dependencies.
+Or manually:
+```bash
+git clone https://github.com/D3B-0x0/dotfiles.git && cd dotfiles && bash install.sh
+```
+
+### **Packages & Dependencies**
+Check `packages.txt inside the installer directory` for a list of all essential packages from my personal Arch system.
 
 ---
 
 ## **🎁 Extras**
 
-
-
-
-## **📸 Screenshots**
+## **🖼️ Screenshots**
 ![image](https://github.com/user-attachments/assets/9850eda3-f21f-41e0-b398-844d64875264)
 
 ---
 
 ![image](https://github.com/user-attachments/assets/586feb4d-1941-48a3-b756-fa18454ebfe0)
 
-
 ---
 ![image](https://github.com/user-attachments/assets/f20da9d7-7762-401f-9022-36026d50bdfe)
-## **These are just few snippets of the workspace**
 
+## **These are just a few snippets of the workspace**
 
-
-
-### **🖼️ Wallpapers**
+### **🎨 Wallpapers**
 _[Catppuccin](https://github.com/orangci/walls-catppuccin-mocha)_
 
 _[Rose Pine](https://github.com/rose-pine/wallpapers)_
 
-*some catppuccin and rose pine based wallpapers*
+*Some Catppuccin and Rose Pine-based wallpapers*
 
+---
 
-## **🙏 Credits & Inspirations**
+## **💟 Credits & Inspirations**
 
-**Cheers to the developers and also all credits to the ricing community for this amazing creativity!**
+**Cheers to the developers and the ricing community for this amazing creativity!**
 
-![catppuccin](https://catppuccin.com)
+[catppuccin](https://catppuccin.com)
 
-![rosepine](https://rosepinetheme.com/)
+[rosepine](https://rosepinetheme.com/)
 
-![aylur-original creator of ags](https://github.com/Aylur)
+[aylur-original creator of ags](https://github.com/Aylur)
 
-![end-4 :my previous rice was all his ... so pure credits to him for popularizing ags](https://github.com/end-4/dots-hyprland/)
+[end-4 :my previous rice was all his ... so pure credits to him for popularizing ags](https://github.com/end-4/dots-hyprland/)
 
-![All cheers to him as well for making ags so much configurable via GUI](https://github.com/Jas-SinghFSU/HyprPanel)
+[All cheers to him as well for making ags so much configurable via GUI](https://github.com/Jas-SinghFSU/HyprPanel)
 
-ALSO THERE ARE MANY UNCOUNTABLE PEOPLE INVOLVED IN THIS BEAUTIFUL COMMUNITY💫
+ALSO, THERE ARE MANY UNCOUNTABLE PEOPLE INVOLVED IN THIS BEAUTIFUL COMMUNITY ✨
+
 *Shoutout to the amazing people and projects that sparked these ideas. 💡*
 
 ---
 
-## **📄 License**
+## **📝 License**
 Feel free to use and modify these dotfiles for personal use. A mention would be appreciated if you’re inspired by my creativity. 😄
 
 ---
