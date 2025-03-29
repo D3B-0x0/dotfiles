@@ -18,56 +18,49 @@ fi
 
 print_status "Starting system setup..."
 
+# Get actual user's home directory
+USER_HOME=$(getent passwd $SUDO_USER | cut -d: -f6)
+DOTFILES_DIR="$USER_HOME/.dotfiles"
+
 # Install dependencies
 print_status "Installing dependencies..."
-pacman -Sy --noconfirm git curl gum || { print_error "Failed to install dependencies."; exit 1; }
+pacman -Sy --noconfirm git curl gum
 
-# Clone dotfiles repo (Prevent double cloning)
-DOTFILES_DIR="$HOME/.dotfiles"
-if [ -d "$DOTFILES_DIR/.git" ]; then
-    print_status "Dotfiles directory already exists. Pulling latest changes..."
-    git -C "$DOTFILES_DIR" pull || { print_error "Failed to update dotfiles."; exit 1; }
-else
-    print_status "Cloning dotfiles repository..."
-    git clone --depth=1 "https://github.com/D3B-0x0/dotfiles.git" "$DOTFILES_DIR" || { print_error "Failed to clone dotfiles."; exit 1; }
+# Clone dotfiles in the user's home directory
+if [ -d "$DOTFILES_DIR" ]; then
+    print_status "Dotfiles directory already exists. Removing old one..."
+    rm -rf "$DOTFILES_DIR"
 fi
+
+print_status "Cloning dotfiles repository to $DOTFILES_DIR..."
+sudo -u $SUDO_USER git clone "https://github.com/D3B-0x0/dotfiles.git" "$DOTFILES_DIR"
 
 # Ensure scripts are executable
-chmod +x "$DOTFILES_DIR/installer/dotfiles.sh" "$DOTFILES_DIR/installer/packages.sh" || { print_error "Failed to make scripts executable."; exit 1; }
+chmod +x "$DOTFILES_DIR/installer/dotfiles.sh" "$DOTFILES_DIR/installer/packages.sh"
 
-# Add Chaotic AUR Repository if missing
-if ! grep -q "\[chaotic-aur\]" /etc/pacman.conf; then
-    print_status "Adding Chaotic AUR repository..."
-    pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
-    pacman-key --lsign-key 3056513887B78AEB
-    pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
-    pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
-    echo -e "\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist" | tee -a /etc/pacman.conf
-    print_success "Chaotic AUR added successfully!"
+# Install dotfiles FIRST
+print_status "Installing dotfiles..."
+if [ -f "$DOTFILES_DIR/installer/dotfiles.sh" ]; then
+    sudo -u $SUDO_USER bash "$DOTFILES_DIR/installer/dotfiles.sh"
+    print_success "Dotfiles installed successfully!"
 else
-    print_status "Chaotic AUR already added. Skipping..."
+    print_error "Dotfiles installation script not found!"
+    exit 1
 fi
 
-# Add BlackArch Repository if missing
-if ! pacman -Q blackarch-keyring &>/dev/null; then
-    print_status "Adding BlackArch repository..."
-    curl -O https://blackarch.org/strap.sh || { print_error "Failed to download BlackArch setup script."; exit 1; }
-    sha1sum strap.sh | grep -q "86eb4efb68918dbfdd1e22862a48fda20a8145ff" || { print_error "SHA1 checksum failed!"; rm strap.sh; exit 1; }
-    chmod +x strap.sh
-    ./strap.sh || { print_error "BlackArch installation failed."; exit 1; }
-    rm strap.sh
-    print_success "BlackArch repo added successfully!"
+# Install packages AFTER dotfiles
+print_status "Installing packages..."
+if [ -f "$DOTFILES_DIR/installer/packages.sh" ]; then
+    sudo -u $SUDO_USER bash "$DOTFILES_DIR/installer/packages.sh"
+    print_success "Packages installed successfully!"
 else
-    print_status "BlackArch repo already added. Skipping..."
+    print_error "Package installation script not found!"
+    exit 1
 fi
 
-# Full system update
-print_status "Updating system..."
-pacman -Syu --noconfirm || { print_error "System update failed."; exit 1; }
-
-# Run dotfiles and package installer
-print_status "Running dotfiles and package installation..."
-bash "$DOTFILES_DIR/installer/dotfiles.sh" || { print_error "Dotfiles installation failed."; exit 1; }
-bash "$DOTFILES_DIR/installer/packages.sh" || { print_error "Package installation failed."; exit 1; }
+# Remove cloned repo AFTER everything is done
+print_status "Cleaning up dotfiles repo..."
+rm -rf "$DOTFILES_DIR"
+print_success "Cleanup completed!"
 
 print_success "System setup completed successfully! 🚀"
