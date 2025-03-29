@@ -34,22 +34,34 @@ clone_dotfiles() {
 
 install_dotfiles() {
     print_status "Running dotfiles installation..."
-    
-   DOTFILES_SCRIPT="$DOTFILES_DIR/installer/dotfiles.sh"
 
-if [ ! -f "$DOTFILES_SCRIPT" ]; then
-    print_error "dotfiles.sh not found in $DOTFILES_DIR/installer!"
-    exit 1
-else
-    print_status "Found dotfiles.sh at $DOTFILES_SCRIPT"
-    chmod +x "$DOTFILES_SCRIPT"
-    bash "$DOTFILES_SCRIPT" || print_error "Dotfiles installation failed"
-fi
+    DOTFILES_SCRIPT="$DOTFILES_DIR/installer/dotfiles.sh"
 
-    chmod +x "$DOTFILES_DIR/dotfiles.sh"
-    bash "$DOTFILES_DIR/dotfiles.sh" || print_error "Dotfiles installation failed"
+    if [ ! -f "$DOTFILES_SCRIPT" ]; then
+        print_error "dotfiles.sh not found in $DOTFILES_DIR/installer!"
+    else
+        print_status "Found dotfiles.sh at $DOTFILES_SCRIPT"
+        chmod +x "$DOTFILES_SCRIPT"
+        bash "$DOTFILES_SCRIPT" || print_error "Dotfiles installation failed"
+    fi
 
     print_success "Dotfiles installed successfully"
+}
+
+install_packages() {
+    print_status "Installing packages..."
+
+    PACKAGES_SCRIPT="$DOTFILES_DIR/installer/packages.sh"
+
+    if [ ! -f "$PACKAGES_SCRIPT" ]; then
+        print_error "packages.sh not found in $DOTFILES_DIR/installer!"
+    else
+        print_status "Found packages.sh at $PACKAGES_SCRIPT"
+        chmod +x "$PACKAGES_SCRIPT"
+        bash "$PACKAGES_SCRIPT" || print_error "Package installation failed"
+    fi
+
+    print_success "Packages installed successfully"
 }
 
 main() {
@@ -57,6 +69,7 @@ main() {
     install_dependencies
     clone_dotfiles
     install_dotfiles
+    install_packages
     print_success "Setup complete!"
 }
 
