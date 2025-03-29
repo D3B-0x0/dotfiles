@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 # Enhanced dotfiles setup script with Gum for beautiful CLI interfaces
-# https://github.com/charmbracelet/gum
-# Designed to be executed with: bash -c "$(curl -fsSL https://raw.githubusercontent.com/D3B-0x0/dotfiles/main/install.sh)"
+# Uses dedicated scripts instead of symlinking
 
 # Configuration
 DOTFILES_REPO="https://github.com/D3B-0x0/dotfiles.git"
 DOTFILES_DIR="$HOME/.dotfiles"
 PACKAGES_SCRIPT="$DOTFILES_DIR/installer/packages.sh"
+DOTFILES_SCRIPT="$DOTFILES_DIR/installer/dotfiles.sh"
 
 # Install Gum if not already installed
 install_gum() {
@@ -165,348 +165,152 @@ clone_dotfiles() {
     gum style --border normal --margin "0 1" --padding "0 2" --border-foreground 46 "$(gum style --foreground 46 "Dotfiles are now ready at: $(gum style --bold --underline "$DOTFILES_DIR")")"
 }
 
-install_dotfiles() {
-    gum style --border rounded --margin "1" --padding "1 2" --border-foreground 147 "$(gum style --foreground 147 --bold "🔧 Installing Dotfiles")"
+# Run the dedicated dotfiles.sh script
+setup_dotfiles() {
+    gum style --border rounded --margin "1" --padding "1 2" --border-foreground 147 "$(gum style --foreground 147 --bold "🔧 Setting Up Dotfiles")"
     
     cd "$DOTFILES_DIR" || print_error "Could not change to dotfiles directory"
     
-    if [ -f "$DOTFILES_DIR/install.sh" ]; then
-        # Found the install script in the repository
-        chmod +x "$DOTFILES_DIR/install.sh"
+    if [ -f "$DOTFILES_SCRIPT" ]; then
+        # Found the dotfiles script in the repository
+        chmod +x "$DOTFILES_SCRIPT"
         
-        gum style --foreground 147 "Found $(gum style --bold --underline "install.sh") script in the repository"
+        gum style --foreground 147 "Found $(gum style --bold --underline "dotfiles.sh") script in the repository"
         
         # Display script size and modification time
-        SCRIPT_SIZE=$(du -h "$DOTFILES_DIR/install.sh" | cut -f1)
-        SCRIPT_MODIFIED=$(stat -c %y "$DOTFILES_DIR/install.sh" 2>/dev/null || \
-                         stat -f "%Sm" "$DOTFILES_DIR/install.sh" 2>/dev/null)
+        SCRIPT_SIZE=$(du -h "$DOTFILES_SCRIPT" | cut -f1)
+        SCRIPT_MODIFIED=$(stat -c %y "$DOTFILES_SCRIPT" 2>/dev/null || \
+                         stat -f "%Sm" "$DOTFILES_SCRIPT" 2>/dev/null)
         
         gum style --foreground 117 "Script info: $(gum style --bold "$SCRIPT_SIZE") | Last modified: $(gum style --italic "$SCRIPT_MODIFIED")"
         
-        # Show a fancy progress bar during installation
-        gum style --border normal --padding "1 2" --margin "1" "$(gum style --foreground 105 "Running dotfiles installer...")"
+        # Show contents of script (first few lines)
+        gum style --foreground 117 "Script preview (first 5 lines):"
+        head -n 5 "$DOTFILES_SCRIPT" | gum style --foreground 105 --margin "0 2" --padding "1" --border normal
         
-        # This is already being executed from the install.sh, so we need to skip it to avoid recursion
-        gum style --foreground 208 "Skipping install.sh execution to avoid recursion since this is already the install script"
-        
-        # Instead let's run the stow command or other dotfiles linking directly
-        if command -v stow &> /dev/null; then
-            # For GNU Stow based dotfiles
-            gum style --foreground 117 "Using GNU Stow to symlink dotfiles"
+        # Ask for confirmation before running
+        gum confirm "Run dotfiles.sh script?" && {
+            # Show a fancy progress bar during execution
+            gum style --border normal --padding "1 2" --margin "1" "$(gum style --foreground 105 "Running dotfiles installer...")"
             
-            # Find all potential stow packages
-            STOW_DIRS=$(find . -maxdepth 1 -type d -not -path "." -not -path "./.git" -not -path "./installer" -printf "%f\n")
+            # Execute with spinner
+            gum spin --spinner points --title "$(gum style --foreground 39 "Executing dotfiles.sh...")" -- \
+                bash "$DOTFILES_SCRIPT" || print_error "Failed to run dotfiles.sh script"
             
-            if [ -n "$STOW_DIRS" ]; then
-                gum style --foreground 117 "Found potential stow packages:"
-                SELECTED_DIRS=$(echo "$STOW_DIRS" | gum choose --no-limit)
-                
-                if [ -n "$SELECTED_DIRS" ]; then
-                    for dir in $SELECTED_DIRS; do
-                        gum spin --spinner dot --title "$(gum style --foreground 39 "Stowing $dir...")" -- \
-                            stow -v "$dir" || gum style --foreground 208 "Warning: Stowing $dir failed"
-                    done
-                    gum style --foreground 46 "Dotfiles linked successfully!"
-                else
-                    gum style --foreground 208 "No stow packages selected"
-                fi
-            else
-                # If no stow directories found, try simple copy
-                gum style --foreground 117 "No stow packages found, copying dotfiles directly"
-                cp -r .config/* "$HOME/.config/" 2>/dev/null || true
-                for file in .*rc .* ; do
-                    if [ -f "$file" ] && [ "$file" != ".git" ]; then
-                        cp -v "$file" "$HOME/" 2>/dev/null || true
-                    fi
-                done
-            fi
-        else
-            # Install stow
-            gum confirm "$(gum style --foreground 117 "GNU Stow not found. Would you like to install it?")" && {
-                gum spin --spinner dot --title "$(gum style --foreground 39 "Installing GNU Stow...")" -- \
-                    sudo pacman -S --noconfirm stow
-                
-                # Retry stow after installation
-                gum style --foreground 117 "Using GNU Stow to symlink dotfiles"
-                
-                # Find all potential stow packages
-                STOW_DIRS=$(find . -maxdepth 1 -type d -not -path "." -not -path "./.git" -not -path "./installer" -printf "%f\n")
-                
-                if [ -n "$STOW_DIRS" ]; then
-                    gum style --foreground 117 "Found potential stow packages:"
-                    SELECTED_DIRS=$(echo "$STOW_DIRS" | gum choose --no-limit)
-                    
-                    if [ -n "$SELECTED_DIRS" ]; then
-                        for dir in $SELECTED_DIRS; do
-                            gum spin --spinner dot --title "$(gum style --foreground 39 "Stowing $dir...")" -- \
-                                stow -v "$dir" || gum style --foreground 208 "Warning: Stowing $dir failed"
-                        done
-                        gum style --foreground 46 "Dotfiles linked successfully!"
-                    else
-                        gum style --foreground 208 "No stow packages selected"
-                    fi
-                fi
-            } || {
-                # Fallback to simple copy method
-                gum style --foreground 117 "Copying dotfiles to home directory"
-                mkdir -p "$HOME/.config"
-                cp -r .config/* "$HOME/.config/" 2>/dev/null || true
-                for file in .*rc .* ; do
-                    if [ -f "$file" ] && [ "$file" != ".git" ]; then
-                        cp -v "$file" "$HOME/" 2>/dev/null || true
-                    fi
-                done
-            }
-        fi
-    else
-        gum style --foreground 208 --border normal --padding "1" --margin "1" --border-foreground 208 "$(gum style --bold "⚠️ Warning"): No install.sh script found in dotfiles repository"
-        
-        # Offer to run stow or simple copy as an alternative
-        gum confirm "Would you like to try symlinking/copying the dotfiles manually?" && {
-            if command -v stow &> /dev/null; then
-                # For GNU Stow based dotfiles
-                gum style --foreground 117 "Using GNU Stow to symlink dotfiles"
-                
-                # Find all potential stow packages
-                STOW_DIRS=$(find . -maxdepth 1 -type d -not -path "." -not -path "./.git" -not -path "./installer" -printf "%f\n")
-                
-                if [ -n "$STOW_DIRS" ]; then
-                    gum style --foreground 117 "Found potential stow packages:"
-                    SELECTED_DIRS=$(echo "$STOW_DIRS" | gum choose --no-limit)
-                    
-                    if [ -n "$SELECTED_DIRS" ]; then
-                        for dir in $SELECTED_DIRS; do
-                            gum spin --spinner dot --title "$(gum style --foreground 39 "Stowing $dir...")" -- \
-                                stow -v "$dir" || gum style --foreground 208 "Warning: Stowing $dir failed"
-                        done
-                        gum style --foreground 46 "Dotfiles linked successfully!"
-                    else
-                        gum style --foreground 208 "No stow packages selected"
-                    fi
-                else
-                    # If no stow directories found, try simple copy
-                    gum style --foreground 117 "No stow packages found, copying dotfiles directly"
-                    mkdir -p "$HOME/.config"
-                    cp -r .config/* "$HOME/.config/" 2>/dev/null || true
-                    for file in .*rc .* ; do
-                        if [ -f "$file" ] && [ "$file" != ".git" ]; then
-                            cp -v "$file" "$HOME/" 2>/dev/null || true
-                        fi
-                    done
-                fi
-            } else
-                # Offer to install stow
-                gum confirm "$(gum style --foreground 117 "GNU Stow not found. Would you like to install it?")" && {
-                    gum spin --spinner dot --title "$(gum style --foreground 39 "Installing GNU Stow...")" -- \
-                        sudo pacman -S --noconfirm stow
-                    
-                    # Retry stow after installation
-                    gum style --foreground 117 "Using GNU Stow to symlink dotfiles"
-                    
-                    # Find all potential stow packages
-                    STOW_DIRS=$(find . -maxdepth 1 -type d -not -path "." -not -path "./.git" -not -path "./installer" -printf "%f\n")
-                    
-                    if [ -n "$STOW_DIRS" ]; then
-                        gum style --foreground 117 "Found potential stow packages:"
-                        SELECTED_DIRS=$(echo "$STOW_DIRS" | gum choose --no-limit)
-                        
-                        if [ -n "$SELECTED_DIRS" ]; then
-                            for dir in $SELECTED_DIRS; do
-                                gum spin --spinner dot --title "$(gum style --foreground 39 "Stowing $dir...")" -- \
-                                    stow -v "$dir" || gum style --foreground 208 "Warning: Stowing $dir failed"
-                            done
-                            gum style --foreground 46 "Dotfiles linked successfully!"
-                        else
-                            gum style --foreground 208 "No stow packages selected"
-                        fi
-                    fi
-                } || {
-                    # Fallback to simple copy method
-                    gum style --foreground 117 "Copying dotfiles to home directory"
-                    mkdir -p "$HOME/.config"
-                    cp -r .config/* "$HOME/.config/" 2>/dev/null || true
-                    for file in .*rc .* ; do
-                        if [ -f "$file" ] && [ "$file" != ".git" ]; then
-                            cp -v "$file" "$HOME/" 2>/dev/null || true
-                        fi
-                    done
-                }
-            }
+            # Success animation
+            echo -n "$(gum style --foreground 46 "Dotfiles setup complete ")"
+            for i in {1..3}; do
+                echo -n "$(gum style --foreground 46 "✓")"
+                sleep 0.2
+            done
+            echo ""
+            
+            print_success "Dotfiles set up successfully!"
         } || {
-            print_error "No install.sh script found and manual installation declined"
+            gum style --foreground 208 "Skipping dotfiles setup as requested"
+        }
+    else
+        gum style --foreground 208 --border normal --padding "1" --margin "1" --border-foreground 208 "$(gum style --bold "⚠️ Warning"): No dotfiles.sh script found at $DOTFILES_SCRIPT"
+        
+        # Offer to continue without it
+        gum confirm "Continue without dotfiles.sh?" || {
+            print_error "Setup cancelled by user due to missing dotfiles.sh script"
         }
     fi
-    
-    # Success animation
-    echo -n "$(gum style --foreground 46 "Finalizing dotfiles setup ")"
-    for i in {1..3}; do
-        echo -n "$(gum style --foreground 46 "✓")"
-        sleep 0.2
-    done
-    echo ""
-    
-    print_success "Dotfiles installed successfully!"
 }
 
+# Run the dedicated packages.sh script
 install_packages() {
     gum style --border double --margin "1" --padding "1 2" --border-foreground 99 "$(gum style --foreground 99 --bold "📦 Package Installation")"
     
     if [ ! -f "$PACKAGES_SCRIPT" ]; then
-        gum style --foreground 196 --border normal --padding "1" --margin "1" --border-foreground 196 "$(gum style --bold "⚠️ Error"): packages.sh not found in $DOTFILES_DIR/installer!"
+        gum style --foreground 196 --border normal --padding "1" --margin "1" --border-foreground 196 "$(gum style --bold "⚠️ Error"): packages.sh not found at $PACKAGES_SCRIPT!"
         
-        # Offer a solution instead of just erroring out
-        gum confirm "Would you like to create a basic packages script for Arch Linux?" && {
-            mkdir -p "$(dirname "$PACKAGES_SCRIPT")"
-            gum style --foreground 226 "Creating a basic packages script for Arch Linux..."
-            
-            # Create packages categories for selection
-            cat > "$PACKAGES_SCRIPT" << EOF
-#!/bin/bash
-# Auto-generated packages script for Arch Linux
-
-# Package groups
-PACKAGE_GROUPS=("essential" "development" "productivity" "media" "gaming" "aur")
-
-# Package definitions
-essential=("git" "curl" "vim" "htop" "base-devel")
-development=("python" "nodejs" "gcc" "make" "cmake")
-productivity=("tmux" "neofetch" "stow")
-media=("vlc" "ffmpeg" "mpv")
-gaming=("steam" "lutris" "wine")
-aur=("yay" "paru")
-
-# Install function
-install_packages() {
-    local category=\$1
-    echo "Installing \$category packages..."
-    
-    if [[ "\$category" == "aur" ]]; then
-        # Handle AUR packages separately
-        if ! command -v yay &> /dev/null && ! command -v paru &> /dev/null; then
-            echo "Installing AUR helper (yay)..."
-            git clone https://aur.archlinux.org/yay.git /tmp/yay
-            cd /tmp/yay || exit
-            makepkg -si --noconfirm
-            cd - || exit
-        fi
-        
-        if command -v yay &> /dev/null; then
-            yay -S --noconfirm \${!category[@]}
-        elif command -v paru &> /dev/null; then
-            paru -S --noconfirm \${!category[@]}
-        else
-            echo "No AUR helper found. Cannot install AUR packages."
-        fi
-    else
-        # Regular packages
-        sudo pacman -S --noconfirm --needed \${!category[@]}
-    fi
-}
-
-# Main
-if [ \$# -eq 0 ]; then
-    echo "No package groups specified. Available: \${PACKAGE_GROUPS[*]}"
-    exit 1
-fi
-
-for group in "\$@"; do
-    if [[ " \${PACKAGE_GROUPS[*]} " == *" \$group "* ]]; then
-        install_packages "\$group"
-    else
-        echo "Unknown package group: \$group"
-    fi
-done
-EOF
-            chmod +x "$PACKAGES_SCRIPT"
-            gum style --foreground 46 --bold "Basic packages script created at $PACKAGES_SCRIPT"
-        } || {
-            print_error "packages.sh not found in $DOTFILES_DIR/installer!"
+        # Offer to continue without it
+        gum confirm "Continue without packages.sh?" || {
+            print_error "Setup cancelled by user due to missing packages.sh script"
         }
-    fi
+        return
+    }
     
     gum style --foreground 117 "📋 Found packages script at: $(gum style --underline "$PACKAGES_SCRIPT")"
     chmod +x "$PACKAGES_SCRIPT"
     
-    # Enhanced package group selection
-    if grep -q "PACKAGE_GROUPS" "$PACKAGES_SCRIPT"; then
-        # Extract available groups from script
-        AVAILABLE_GROUPS=$(grep -o 'PACKAGE_GROUPS=([^)]*' "$PACKAGES_SCRIPT" | sed 's/PACKAGE_GROUPS=(//' | tr -d '"' | tr -d "'" | tr ' ' '\n' | sort)
-        
-        # Create a fancy selection menu with descriptions
-        gum style --margin "1" --padding "1 2" --border rounded --border-foreground 105 "$(gum style --foreground 105 --bold "📦 Package Categories")\n\n$(gum style --foreground 117 "Select categories to install (space to select, enter to confirm):")"
-        
-        # Create a more interactive selection experience
-        SELECTED_GROUPS=$(echo "$AVAILABLE_GROUPS" | gum choose --no-limit --height 15)
-        
-        if [ -z "$SELECTED_GROUPS" ]; then
-            gum style --foreground 208 "No package groups selected. Skipping package installation."
-            return
+    # Display script information
+    SCRIPT_SIZE=$(du -h "$PACKAGES_SCRIPT" | cut -f1)
+    SCRIPT_MODIFIED=$(stat -c %y "$PACKAGES_SCRIPT" 2>/dev/null || \
+                     stat -f "%Sm" "$PACKAGES_SCRIPT" 2>/dev/null)
+    
+    gum style --foreground 117 "Script info: $(gum style --bold "$SCRIPT_SIZE") | Last modified: $(gum style --italic "$SCRIPT_MODIFIED")"
+    
+    # Show contents of script (first few lines)
+    gum style --foreground 117 "Script preview (first 5 lines):"
+    head -n 5 "$PACKAGES_SCRIPT" | gum style --foreground 105 --margin "0 2" --padding "1" --border normal
+    
+    # Ask for confirmation before running
+    gum confirm "Run packages.sh script?" && {
+        # Check if we need to run with extra parameters
+        if grep -q "PACKAGE_GROUPS" "$PACKAGES_SCRIPT"; then
+            # Extract available groups from script
+            AVAILABLE_GROUPS=$(grep -o 'PACKAGE_GROUPS=([^)]*' "$PACKAGES_SCRIPT" | sed 's/PACKAGE_GROUPS=(//' | tr -d '"' | tr -d "'" | tr ' ' '\n' | sort)
+            
+            if [ -n "$AVAILABLE_GROUPS" ]; then
+                # Create a fancy selection menu
+                gum style --margin "1" --padding "1 2" --border rounded --border-foreground 105 "$(gum style --foreground 105 --bold "📦 Package Categories")\n\n$(gum style --foreground 117 "Select categories to install (space to select, enter to confirm):")"
+                
+                # Interactive selection experience
+                SELECTED_GROUPS=$(echo "$AVAILABLE_GROUPS" | gum choose --no-limit --height 15)
+                
+                if [ -n "$SELECTED_GROUPS" ]; then
+                    gum style --margin "1" --foreground 117 "$(gum style --bold "🚀 Ready to install:")$(gum style --foreground 226 " $SELECTED_GROUPS")"
+                    
+                    # Start a fancy progress meter
+                    TOTAL_GROUPS=$(echo "$SELECTED_GROUPS" | wc -w)
+                    CURRENT_GROUP=0
+                    
+                    for group in $SELECTED_GROUPS; do
+                        ((CURRENT_GROUP++))
+                        PERCENT=$((CURRENT_GROUP * 100 / TOTAL_GROUPS))
+                        
+                        # Create a visual progress bar
+                        PROGRESS_BAR=""
+                        for ((i=0; i<PERCENT/5; i++)); do
+                            PROGRESS_BAR="${PROGRESS_BAR}▓"
+                        done
+                        for ((i=PERCENT/5; i<20; i++)); do
+                            PROGRESS_BAR="${PROGRESS_BAR}░"
+                        done
+                        
+                        gum style --foreground 39 "Installing group $(gum style --bold --foreground 105 "$group") [$CURRENT_GROUP/$TOTAL_GROUPS]"
+                        gum style --foreground 117 "$PROGRESS_BAR $PERCENT%"
+                        
+                        # Run with spinner
+                        gum spin --spinner dot --title "$(gum style --foreground 39 "Installing $group packages...")" -- \
+                            bash "$PACKAGES_SCRIPT" "$group" || print_error "Failed to install $group packages"
+                        
+                        # Show success for this group
+                        gum style --foreground 46 "✓ $(gum style --bold "$group") packages installed!"
+                    done
+                else
+                    gum style --foreground 208 "No package groups selected. Skipping package installation."
+                    return
+                fi
+            else
+                # If no package groups defined, just run the script
+                gum spin --spinner points --title "$(gum style --foreground 39 "Installing packages...")" -- \
+                    bash "$PACKAGES_SCRIPT" || print_error "Package installation failed"
+            fi
+        else
+            # Just run the script without parameters
+            gum spin --spinner points --title "$(gum style --foreground 39 "Installing packages...")" -- \
+                bash "$PACKAGES_SCRIPT" || print_error "Package installation failed"
         fi
         
-        # Show what's going to be installed with a preview
-        gum style --margin "1" --foreground 117 "$(gum style --bold "🚀 Ready to install:")$(gum style --foreground 226 " $SELECTED_GROUPS")"
-        
-        # Create a live progress tracker for package installation
-        TOTAL_GROUPS=$(echo "$SELECTED_GROUPS" | wc -w)
-        CURRENT_GROUP=0
-        
-        # Start a fancy progress meter
-        for group in $SELECTED_GROUPS; do
-            ((CURRENT_GROUP++))
-            PERCENT=$((CURRENT_GROUP * 100 / TOTAL_GROUPS))
-            
-            # Create a visual progress bar
-            PROGRESS_BAR=""
-            for ((i=0; i<PERCENT/5; i++)); do
-                PROGRESS_BAR="${PROGRESS_BAR}▓"
-            done
-            for ((i=PERCENT/5; i<20; i++)); do
-                PROGRESS_BAR="${PROGRESS_BAR}░"
-            done
-            
-            gum style --foreground 39 "Installing group $(gum style --bold --foreground 105 "$group") [$CURRENT_GROUP/$TOTAL_GROUPS]"
-            gum style --foreground 117 "$PROGRESS_BAR $PERCENT%"
-            
-            # Run the installation with a spinner and live output
-            TEMP_LOG=$(mktemp)
-            gum spin --spinner dot --title "$(gum style --foreground 39 "Installing $group packages...")" -- \
-                bash "$PACKAGES_SCRIPT" "$group" > "$TEMP_LOG" 2>&1 || {
-                    cat "$TEMP_LOG"
-                    rm "$TEMP_LOG"
-                    print_error "Failed to install $group packages"
-                }
-            rm "$TEMP_LOG"
-            
-            # Show success for this group
-            gum style --foreground 46 "✓ $(gum style --bold "$group") packages installed!"
-        done
-    else
-        # If no package groups defined, ask if user wants to see live output
-        gum confirm "$(gum style --foreground 117 "Would you like to see live installation output?")" && {
-            # Run with live output
-            gum style --foreground 39 --bold "📦 Installing packages with live output:"
-            gum style --border normal --margin "1" --padding "0" --border-foreground 105
-            bash "$PACKAGES_SCRIPT" || print_error "Package installation failed"
-        } || {
-            # Run silently with a fun spinner
-            SPINNERS=("points" "line" "meter" "moon" "monkey" "dot" "hamburger")
-            RANDOM_SPINNER=${SPINNERS[$RANDOM % ${#SPINNERS[@]}]}
-            
-            gum spin --spinner "$RANDOM_SPINNER" --title "$(gum style --foreground 39 "🔄 Installing packages... Grab a coffee! ☕")" -- \
-                bash "$PACKAGES_SCRIPT" || print_error "Package installation failed"
-        }
-    fi
-    
-    # Celebratory success message
-    gum style --margin "1" --border double --padding "1 2" --border-foreground 46 "$(gum style --foreground 46 --bold "🎉 All packages installed successfully! 🎉")"
-    
-    # Show a quick animation
-    echo -n "$(gum style --foreground 46 "Finalizing... ")"
-    for i in {1..5}; do
-        echo -n "$(gum style --foreground 46 "✨")"
-        sleep 0.15
-    done
-    echo ""
+        # Success message
+        gum style --margin "1" --border double --padding "1 2" --border-foreground 46 "$(gum style --foreground 46 --bold "🎉 All packages installed successfully! 🎉")"
+    } || {
+        gum style --foreground 208 "Skipping package installation as requested"
+    }
 }
 
 main() {
@@ -520,14 +324,14 @@ main() {
         exit 1
     fi
     
-    # Display a fancy header
-    print_header "🚀 D3B-0x0's Arch Linux Dotfiles Setup Wizard 🚀"
-    
     # Install Gum first
     install_gum
     
+    # Display a fancy header
+    print_header "🚀 D3B-0x0's Arch Linux Dotfiles Setup Wizard 🚀"
+    
     # Display setup steps
-    gum style --margin "1" --padding "1 2" --border normal --border-foreground 105 "$(gum style --foreground 105 "This script will set up your dotfiles and install necessary packages for Arch Linux.")"
+    gum style --margin "1" --padding "1 2" --border normal --border-foreground 105 "$(gum style --foreground 105 "This script will set up your dotfiles and install necessary packages for Arch Linux using the dedicated scripts.")"
     
     # Ask for confirmation before proceeding
     gum confirm "Ready to start?" || {
@@ -538,7 +342,7 @@ main() {
     # Run each step with progress indications
     install_dependencies
     clone_dotfiles
-    install_dotfiles
+    setup_dotfiles
     install_packages
     
     # Display completion message with some flair
