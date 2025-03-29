@@ -10,6 +10,7 @@ else
 fi
 
 DOTFILES_DIR="$USER_HOME/.dotfiles"
+DOTFILES_REPO="https://github.com/D3B-0x0/dotfiles.git"
 DOTFILES_SCRIPT="$DOTFILES_DIR/dotfiles.sh"
 PACKAGES_SCRIPT="$DOTFILES_DIR/packages.sh"
 
@@ -38,12 +39,38 @@ install_dependencies() {
     print_success "Dependencies installed"
 }
 
+# Clone dotfiles repository
+clone_dotfiles() {
+    if [ -d "$DOTFILES_DIR" ]; then
+        print_warning "Dotfiles directory already exists!"
+        while true; do
+            read -r -p "Do you want to remove it and clone again? (y/n): " choice
+            choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]')
+            case "$choice" in
+                y) rm -rf "$DOTFILES_DIR"; break ;;
+                n) print_error "Dotfiles already exist, but script may fail. Exiting."; exit 1 ;;
+                *) echo "Invalid input, please enter y or n." ;;
+            esac
+        done
+    fi
+
+    print_status "Cloning dotfiles repository..."
+    sudo -u "$USERNAME" git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
+    
+    if [ $? -eq 0 ]; then
+        print_success "Dotfiles cloned successfully"
+    else
+        print_error "Failed to clone repository!"
+        exit 1
+    fi
+}
+
 # Run dotfiles installation
 install_dotfiles() {
     print_status "Running dotfiles installation..."
     
     if [ ! -f "$DOTFILES_SCRIPT" ]; then
-        print_error "dotfiles.sh not found! Make sure the repo is cloned."
+        print_error "dotfiles.sh not found! Something went wrong with cloning."
         exit 1
     fi
     
@@ -67,6 +94,7 @@ main() {
     print_status "Starting system setup..."
     
     install_dependencies
+    clone_dotfiles  # Now ensures dotfiles exist
     install_dotfiles
     install_packages
 
