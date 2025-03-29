@@ -1,8 +1,10 @@
 #!/bin/bash
 
-DOTFILES_DIR="$HOME/.dotfiles"
+# Get actual user's home directory
+USER_HOME=$(eval echo ~$SUDO_USER)
+DOTFILES_DIR="$USER_HOME/.dotfiles"
+CONFIG_DIR="$USER_HOME/.config"
 GITHUB_REPO="https://github.com/D3B-0x0/dotfiles.git"
-CONFIG_DIR="$HOME/.config"
 
 # Colors for output
 RED='\033[0;31m'
@@ -29,7 +31,7 @@ print_warning() {
 
 # Backup existing configs
 backup_configs() {
-    local backup_dir="$HOME/.config_backup_$(date +%Y%m%d_%H%M%S)"
+    local backup_dir="$USER_HOME/.config_backup_$(date +%Y%m%d_%H%M%S)"
     print_status "Creating backup of existing configs in $backup_dir"
 
     mkdir -p "$backup_dir"
@@ -46,7 +48,7 @@ backup_configs() {
 
     for config in "${configs[@]}"; do
         if [ -e "$CONFIG_DIR/$config" ]; then
-            mkdir -p "$backup_dir/$(dirname "$config")"  # Ensure parent directory exists
+            mkdir -p "$backup_dir/$(dirname "$config")"  
             mv -f "$CONFIG_DIR/$config" "$backup_dir/"
             print_status "Backed up: $config"
         fi
@@ -71,8 +73,9 @@ clone_dotfiles() {
         done
     fi
 
-    print_status "Cloning dotfiles repository..."
-    git clone "$GITHUB_REPO" "$DOTFILES_DIR"
+    print_status "Cloning dotfiles repository to $DOTFILES_DIR..."
+    sudo -u "$SUDO_USER" git clone "$GITHUB_REPO" "$DOTFILES_DIR"
+
     if [ $? -eq 0 ]; then
         print_success "Dotfiles cloned successfully"
     else
@@ -85,7 +88,7 @@ clone_dotfiles() {
 install_configs() {
     print_status "Installing config files..."
 
-    mkdir -p "$CONFIG_DIR"
+    sudo -u "$SUDO_USER" mkdir -p "$CONFIG_DIR"
 
     local configs=(
         "ags" "alacritty" "background" "bat" "btop" "cava"
@@ -98,8 +101,8 @@ install_configs() {
     )
 
     for config in "${configs[@]}"; do
-        if [ -d "$DOTFILES_DIR/.config/$config" ] || [ -f "$DOTFILES_DIR/.config/$config" ]; then
-            cp -r "$DOTFILES_DIR/.config/$config" "$CONFIG_DIR/"
+        if [ -e "$DOTFILES_DIR/.config/$config" ]; then
+            sudo -u "$SUDO_USER" cp -r "$DOTFILES_DIR/.config/$config" "$CONFIG_DIR/"
             print_status "Installed: $config"
         else
             print_warning "Source not found: $config"
