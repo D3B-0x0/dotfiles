@@ -4,7 +4,7 @@
 # https://github.com/charmbracelet/gum
 
 # Configuration
-DOTFILES_REPO="https://github.com/yourusername/dotfiles.git"
+DOTFILES_REPO="https://github.com/D3B-0x0/dotfiles.git"
 DOTFILES_DIR="$HOME/.dotfiles"
 PACKAGES_SCRIPT="$DOTFILES_DIR/installer/packages.sh"
 
