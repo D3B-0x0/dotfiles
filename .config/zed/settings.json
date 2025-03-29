@@ -1,15 +1,42 @@
 {
   "features": {
-    "edit_prediction_provider": "copilot"
+    "edit_prediction_provider": "zed"
   },
   "vim_mode": true,
   "ui_font_size": 17,
   "buffer_font_size": 19,
-  "ui_font_family": "Gabarito", // Google's interface font
-  "buffer_font_family": "JetBrainsMono Nerd Font", // Coding font
+  "ui_font_family": "Gabarito",
+  "buffer_font_family": "JetBrainsMono Nerd Font",
   "theme": {
     "mode": "system",
     "light": "Catppuccin Latte",
     "dark": "Catppuccin Mocha"
+  },
+  "base_keymap": "VSCode",
+  "relative_line_numbers": true,
+  "active_pane_modifiers": {
+    "magnification": 1.0,
+    "border_size": 1.0,
+    "inactive_opacity": 0.9
+  },
+
+  "notification_panel": {
+    "dock": "left"
+  },
+  "chat_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "right"
+  },
+  "project_panel": {
+    "dock": "left"
+  },
+  "telemetry": {
+    "diagnostics": true,
+    "metrics": true
+  },
+  "file_finder": {
+    "modal_width": "small"
   }
 }
