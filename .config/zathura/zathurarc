@@ -1,28 +1,109 @@
-# ~/.config/zathura/zathurarc
 include catppuccin-mocha
 
-# Set font to JetBrains Mono with size 12
-set font "JetBrains Mono 11"
+# =====================
+# General Settings
+# =====================
+set font "JetBrains Mono Nerd Font 11"
+set default-bg "#1e1e2e"
+set default-fg "#cdd6f4"
+set statusbar-bg "#181825"
+set statusbar-fg "#cdd6f4"
 
-
-# Enable continuous scrolling
-set continuous true
-
-# Adjust zoom settings
+# Page Settings
+set pages-per-row 1
+set scroll-page-aware true
+set scroll-full-overlap 0.01
+set scroll-step 100
+set zoom-min 10
+set zoom-max 1000
 set zoom-step 10
-set adjust-open best-fit
+set adjust-open "best-fit"
 
-# Show status bar
-set statusbar-visible true
+# GUI Settings
+set guioptions ""
+set window-title-basename true
+set window-title-page true
+set statusbar-home-tilde true
+set selection-clipboard clipboard
+set render-loading true
+set show-hidden true
+set show-directories true
+set show-recent 10
 
-
-# Highlight color for search results
+# Search Settings
 set highlight-color "#f38ba8"
 set highlight-active-color "#f38ba8"
+set search-hadjust true
 
-# Key bindings
+# =====================
+# Key Bindings
+# =====================
+
+# Navigation
 map <C-n> navigate next
 map <C-p> navigate previous
-map <C-d> scroll down
-map <C-u> scroll up
+map <C-d> scroll half-down
+map <C-u> scroll half-up
+map <C-f> scroll full-down
+map <C-b> scroll full-up
+map <C-g> goto
+map [index] <C-g> goto
 
+# Zoom
+map <C-=> zoom in
+map <C--> zoom out
+map <C-0> zoom default
+map <C-r> rotate
+
+#Color
+map <C-c> recolor
+# Search
+map / search
+map ? search backward
+map n search forward
+map N search backward
+
+# Mode Switching
+map <F5> toggle_fullscreen
+map <F8> toggle_index
+map <F11> toggle_fullscreen
+map [fullscreen] <F11> toggle_fullscreen
+
+# Page Layout
+map D toggle_page_mode
+map r reload
+map R rotate
+map p print
+
+map m mark_add
+map . mark_jump
+
+# Custom Shortcuts
+map <Space> navigate next
+map <S-Space> navigate previous
+map <BackSpace> scroll full-up
+
+# Mouse Bindings
+map <Button2> zoom in
+map <Button3> zoom out
+
+# =====================
+# Document Settings
+# =====================
+set recolor true
+set recolor-keephue true
+set recolor-darkcolor "#cdd6f4"
+set recolor-lightcolor "#1e1e2e"
+set recolor-reverse-video true
+
+# Render Settings
+set render-loading-bg "#1e1e2e"
+set render-loading-fg "#cdd6f4"
+set scroll-wrap false
+set link-zoom false
+set link-hadjust false
+
+# Startup Options
+set adjust-open width
+set scroll-page-aware true
+set advance-pages-per-row true
