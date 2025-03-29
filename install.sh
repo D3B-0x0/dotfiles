@@ -1,59 +1,79 @@
 #!/bin/bash
 
-# Colors for output
+# Detect real user if running via sudo
+if [[ -n "$SUDO_USER" ]]; then
+    USER_HOME=$(eval echo ~$SUDO_USER)
+    USERNAME="$SUDO_USER"
+else
+    USER_HOME="$HOME"
+    USERNAME="$USER"
+fi
+
+DOTFILES_DIR="$USER_HOME/.dotfiles"
+DOTFILES_SCRIPT="$DOTFILES_DIR/dotfiles.sh"
+PACKAGES_SCRIPT="$DOTFILES_DIR/packages.sh"
+
+# Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+YELLOW='\033[0;33m'
+NC='\033[0m'
 
 print_status() { echo -e "${BLUE}[INFO]${NC} $1"; }
 print_success() { echo -e "${GREEN}[SUCCESS]${NC} $1"; }
 print_error() { echo -e "${RED}[ERROR]${NC} $1"; }
+print_warning() { echo -e "${YELLOW}[WARNING]${NC} $1"; }
 
-# Check if running as root
-if [[ $EUID -ne 0 ]]; then
-    print_error "This script must be run as root! Use sudo."
+# Ensure script runs as root
+if [ "$EUID" -ne 0 ]; then
+    print_error "This script must be run as root!"
     exit 1
 fi
 
-print_status "Starting system setup..."
-
-# Get actual user's home directory
-USER_HOME=$(eval echo ~$SUDO_USER)
-DOTFILES_DIR="$USER_HOME/.dotfiles"
-
 # Install dependencies
-print_status "Installing dependencies..."
-pacman -Sy --noconfirm git curl gum
+install_dependencies() {
+    print_status "Installing dependencies..."
+    pacman -Syu --needed --noconfirm git curl gum
+    print_success "Dependencies installed"
+}
 
-# Clone dotfiles in the actual user's home directory
-if [ -d "$DOTFILES_DIR" ]; then
-    print_status "Dotfiles directory already exists!"
-    read -p "Do you want to remove it and clone again? (y/n): " REPLY
-    if [[ "$REPLY" == "y" ]]; then
-        rm -rf "$DOTFILES_DIR"
-    else
-        print_error "Dotfiles installation aborted."
+# Run dotfiles installation
+install_dotfiles() {
+    print_status "Running dotfiles installation..."
+    
+    if [ ! -f "$DOTFILES_SCRIPT" ]; then
+        print_error "dotfiles.sh not found! Make sure the repo is cloned."
         exit 1
     fi
+    
+    sudo -u "$USERNAME" bash "$DOTFILES_SCRIPT"
+}
+
+# Run package installation
+install_packages() {
+    print_status "Running package installation..."
+    
+    if [ -f "$PACKAGES_SCRIPT" ]; then
+        sudo -u "$USERNAME" bash "$PACKAGES_SCRIPT"
+        print_success "Packages installed"
+    else
+        print_warning "packages.sh not found! Skipping package installation."
+    fi
+}
+
+# Main function
+main() {
+    print_status "Starting system setup..."
+    
+    install_dependencies
+    install_dotfiles
+    install_packages
+
+    print_success "System setup complete!"
+}
+
+# Run only if script is executed directly
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main
 fi
-
-print_status "Cloning dotfiles repository to $DOTFILES_DIR..."
-sudo -u $SUDO_USER git clone "https://github.com/D3B-0x0/dotfiles.git" "$DOTFILES_DIR"
-
-# Ensure scripts are executable
-chmod +x "$DOTFILES_DIR/installer/dotfiles.sh" "$DOTFILES_DIR/installer/packages.sh"
-
-# Install dotfiles FIRST
-print_status "Installing dotfiles..."
-sudo -u $SUDO_USER bash "$DOTFILES_DIR/installer/dotfiles.sh"
-
-# Install packages AFTER dotfiles
-print_status "Installing packages..."
-sudo -u $SUDO_USER bash "$DOTFILES_DIR/installer/packages.sh"
-
-# Remove cloned repo AFTER everything is done
-print_status "Cleaning up dotfiles repo..."
-rm -rf "$DOTFILES_DIR"
-
-print_success "System setup completed successfully! 🚀"
