@@ -35,9 +35,16 @@ clone_dotfiles() {
 install_dotfiles() {
     print_status "Running dotfiles installation..."
     
-    if [ ! -f "$DOTFILES_DIR/dotfiles.sh" ]; then
-        print_error "dotfiles.sh not found!"
-    fi
+   DOTFILES_SCRIPT="$DOTFILES_DIR/installer/dotfiles.sh"
+
+if [ ! -f "$DOTFILES_SCRIPT" ]; then
+    print_error "dotfiles.sh not found in $DOTFILES_DIR/installer!"
+    exit 1
+else
+    print_status "Found dotfiles.sh at $DOTFILES_SCRIPT"
+    chmod +x "$DOTFILES_SCRIPT"
+    bash "$DOTFILES_SCRIPT" || print_error "Dotfiles installation failed"
+fi
 
     chmod +x "$DOTFILES_DIR/dotfiles.sh"
     bash "$DOTFILES_DIR/dotfiles.sh" || print_error "Dotfiles installation failed"
