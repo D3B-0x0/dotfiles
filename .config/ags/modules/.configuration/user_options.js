@@ -38,7 +38,7 @@ let configOptions = {
         'network': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
         'settings': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center",
         'taskManager': "gnome-usage",
-        'terminal': "wezterm", // This is only for shell actions
+        'terminal': "wezterm -e", // This is only for shell actions
     },
     'battery': {
         'low': 20,
@@ -258,3 +258,4 @@ overrideConfigRecursive(userOverrides, configOptions);
 
 globalThis['userOptions'] = configOptions;
 export default configOptions;
+
