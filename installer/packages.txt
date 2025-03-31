@@ -154,6 +154,7 @@ confuse
 containerd
 convertlit
 coreutils
+cowsay
 cpio
 cppdap
 cpupower
@@ -247,6 +248,7 @@ flex
 fluidsynth
 fmt
 fontconfig
+fortune-mod
 fprintd
 frameworkintegration
 freeglut
@@ -398,7 +400,6 @@ heroic-games-launcher-bin
 hicolor-icon-theme
 hidapi
 highway
-htop
 hunspell
 hwdata
 hwdetect
@@ -447,6 +448,7 @@ intel-gmmlib
 intel-media-driver
 intel-ucode
 inxi
+iperf
 iproute2
 iptables-nft
 iputils
@@ -1118,6 +1120,7 @@ lm_sensors
 lmdb
 localsearch
 logrotate
+lolcat
 loupe
 lsb-release
 lsd
@@ -1208,6 +1211,7 @@ nss-mdns
 ntfs-3g
 ntp
 numactl
+nvtop
 nwg-displays
 nwg-dock-hyprland
 nwg-look
@@ -1517,6 +1521,7 @@ rav1e
 re2
 readline
 rebuild-detector
+recode
 reflector
 rhash
 ripgrep
@@ -1528,6 +1533,13 @@ rsync
 rtkit
 rtmpdump
 rubberband
+ruby
+ruby-erb
+ruby-manpages
+ruby-optimist
+ruby-paint
+ruby-rdoc
+rubygems
 run-parts
 runc
 rust-analyzer
@@ -1565,6 +1577,7 @@ signon-plugin-oauth2
 signon-ui
 signond
 simdjson
+sl
 slang
 slurp
 smartmontools
