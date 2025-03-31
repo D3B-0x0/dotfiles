@@ -38,7 +38,7 @@ let configOptions = {
         'network': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center wifi",
         'settings': "XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center",
         'taskManager': "gnome-usage",
-        'terminal': "wezterm -e", // This is only for shell actions
+        'terminal': "kitty", // This is only for shell actions
     },
     'battery': {
         'low': 20,
@@ -150,7 +150,7 @@ let configOptions = {
         'preferredUnit': "C", // Either C or F
     },
     'workspaces': {
-        'shown': 5,
+        'shown': 10,
     },
     'dock': {
         'enabled': false,

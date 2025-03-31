@@ -124,3 +124,5 @@ function show_ghosts() {
     echo -e "  \e[31m󰊠 \e[35m󰊠 \e[32m󰊠 \e[34m󰊠 \e[36m󰊠 \e[37m󰊠 \e[0m"
 }
 show_ghosts
+
+fortune -a | gum style --border rounded --margin "1" --padding "1 2" --bold --foreground 9
