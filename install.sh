@@ -193,16 +193,17 @@ setup_dotfiles() {
             # Show a fancy progress bar during execution
             gum style --border normal --padding "1 2" --margin "1" "$(gum style --foreground 105 "Running dotfiles installer...")"
             
-            # *** FIX: Create a temporary answer file to handle dotfiles.sh prompts automatically ***
-            # This avoids the install getting stuck at user prompts
-            echo "y" > /tmp/dotfiles_answers
-            
-            # Execute with spinner and provide automatic answers to any prompts
-            gum spin --spinner points --title "$(gum style --foreground 39 "Executing dotfiles.sh...")" -- \
+            # Execute with minimal interactivity - allow script output to display
+            # We don't want to use a spinner here to let the TUI interface of dotfiles.sh show
+            if [ -t 0 ]; then
+                # If running in a terminal, pass input directly to allow for interactive prompts
+                "$DOTFILES_SCRIPT" || print_error "Failed to run dotfiles.sh script"
+            else
+                # Create automatic responses file for non-interactive environments
+                echo "y" > /tmp/dotfiles_answers
                 bash "$DOTFILES_SCRIPT" < /tmp/dotfiles_answers || print_error "Failed to run dotfiles.sh script"
-            
-            # Remove the temporary file
-            rm -f /tmp/dotfiles_answers
+                rm -f /tmp/dotfiles_answers
+            fi
             
             # Success animation
             echo -n "$(gum style --foreground 46 "Dotfiles setup complete ")"
@@ -226,7 +227,7 @@ setup_dotfiles() {
     fi
 }
 
-# Run the dedicated packages.sh script
+# Run the dedicated packages.sh script with proper integration
 install_packages() {
     gum style --border double --margin "1" --padding "1 2" --border-foreground 99 "$(gum style --foreground 99 --bold "📦 Package Installation")"
     
@@ -256,10 +257,10 @@ install_packages() {
     
     # Ask for confirmation before running
     gum confirm "Run packages.sh script?" && {
-        # *** FIX: Create a temporary answer file to handle packages.sh prompts automatically ***
-        echo "y" > /tmp/packages_answers
+        # Create a nice package installation header
+        gum style --margin "1" --padding "1 2" --border rounded --border-foreground 105 "$(gum style --foreground 105 --bold "📦 Package Installation")"
         
-        # Check if we need to run with extra parameters
+        # Check if we need to run with package groups
         if grep -q "PACKAGE_GROUPS" "$PACKAGES_SCRIPT"; then
             # Extract available groups from script
             AVAILABLE_GROUPS=$(grep -o 'PACKAGE_GROUPS=([^)]*' "$PACKAGES_SCRIPT" | sed 's/PACKAGE_GROUPS=(//' | tr -d '"' | tr -d "'" | tr ' ' '\n' | sort)
@@ -274,29 +275,21 @@ install_packages() {
                 if [ -n "$SELECTED_GROUPS" ]; then
                     gum style --margin "1" --foreground 117 "$(gum style --bold "🚀 Ready to install:")$(gum style --foreground 226 " $SELECTED_GROUPS")"
                     
-                    # Start a fancy progress meter
-                    TOTAL_GROUPS=$(echo "$SELECTED_GROUPS" | wc -w)
-                    CURRENT_GROUP=0
-                    
+                    # Process each selected group
                     for group in $SELECTED_GROUPS; do
-                        ((CURRENT_GROUP++))
-                        PERCENT=$((CURRENT_GROUP * 100 / TOTAL_GROUPS))
+                        gum style --foreground 39 "Installing group $(gum style --bold --foreground 105 "$group")"
                         
-                        # Create a visual progress bar
-                        PROGRESS_BAR=""
-                        for ((i=0; i<PERCENT/5; i++)); do
-                            PROGRESS_BAR="${PROGRESS_BAR}▓"
-                        done
-                        for ((i=PERCENT/5; i<20; i++)); do
-                            PROGRESS_BAR="${PROGRESS_BAR}░"
-                        done
-                        
-                        gum style --foreground 39 "Installing group $(gum style --bold --foreground 105 "$group") [$CURRENT_GROUP/$TOTAL_GROUPS]"
-                        gum style --foreground 117 "$PROGRESS_BAR $PERCENT%"
-                        
-                        # Run with spinner and automatic answers
-                        gum spin --spinner dot --title "$(gum style --foreground 39 "Installing $group packages...")" -- \
+                        # Run the script directly without spinner to allow progress to display
+                        # This is key change to show package.sh progress
+                        if [ -t 0 ]; then
+                            # Run interactively if in terminal
+                            "$PACKAGES_SCRIPT" "$group" || print_error "Failed to install $group packages"
+                        else
+                            # Create automatic response file for non-interactive environments
+                            echo "y" > /tmp/packages_answers
                             bash "$PACKAGES_SCRIPT" "$group" < /tmp/packages_answers || print_error "Failed to install $group packages"
+                            rm -f /tmp/packages_answers
+                        fi
                         
                         # Show success for this group
                         gum style --foreground 46 "✓ $(gum style --bold "$group") packages installed!"
@@ -307,17 +300,30 @@ install_packages() {
                 fi
             else
                 # If no package groups defined, just run the script
-                gum spin --spinner points --title "$(gum style --foreground 39 "Installing packages...")" -- \
+                # Run directly without spinner to show progress
+                if [ -t 0 ]; then
+                    # Run interactively if in terminal
+                    "$PACKAGES_SCRIPT" || print_error "Package installation failed"
+                else
+                    # Create automatic response file for non-interactive environments
+                    echo "y" > /tmp/packages_answers
                     bash "$PACKAGES_SCRIPT" < /tmp/packages_answers || print_error "Package installation failed"
+                    rm -f /tmp/packages_answers
+                fi
             fi
         else
-            # Just run the script without parameters but with automatic answers
-            gum spin --spinner points --title "$(gum style --foreground 39 "Installing packages...")" -- \
+            # Just run the script without parameters
+            # Run directly without spinner to show progress
+            if [ -t 0 ]; then
+                # Run interactively if in terminal
+                "$PACKAGES_SCRIPT" || print_error "Package installation failed"
+            else
+                # Create automatic response file for non-interactive environments
+                echo "y" > /tmp/packages_answers
                 bash "$PACKAGES_SCRIPT" < /tmp/packages_answers || print_error "Package installation failed"
+                rm -f /tmp/packages_answers
+            fi
         fi
-        
-        # Remove temporary file
-        rm -f /tmp/packages_answers
         
         # Success message
         gum style --margin "1" --border double --padding "1 2" --border-foreground 46 "$(gum style --foreground 46 --bold "🎉 All packages installed successfully! 🎉")"
