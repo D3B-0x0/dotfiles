@@ -72,7 +72,7 @@ print_step() {
 install_dependencies() {
     print_step "Checking for dependencies..."
     
-    DEPS=("git" "curl")
+    DEPS=("git" "curl" "rsync")
     MISSING_DEPS=()
     
     for dep in "${DEPS[@]}"; do
@@ -193,9 +193,16 @@ setup_dotfiles() {
             # Show a fancy progress bar during execution
             gum style --border normal --padding "1 2" --margin "1" "$(gum style --foreground 105 "Running dotfiles installer...")"
             
-            # Execute with spinner
+            # *** FIX: Create a temporary answer file to handle dotfiles.sh prompts automatically ***
+            # This avoids the install getting stuck at user prompts
+            echo "y" > /tmp/dotfiles_answers
+            
+            # Execute with spinner and provide automatic answers to any prompts
             gum spin --spinner points --title "$(gum style --foreground 39 "Executing dotfiles.sh...")" -- \
-                bash "$DOTFILES_SCRIPT" || print_error "Failed to run dotfiles.sh script"
+                bash "$DOTFILES_SCRIPT" < /tmp/dotfiles_answers || print_error "Failed to run dotfiles.sh script"
+            
+            # Remove the temporary file
+            rm -f /tmp/dotfiles_answers
             
             # Success animation
             echo -n "$(gum style --foreground 46 "Dotfiles setup complete ")"
@@ -249,6 +256,9 @@ install_packages() {
     
     # Ask for confirmation before running
     gum confirm "Run packages.sh script?" && {
+        # *** FIX: Create a temporary answer file to handle packages.sh prompts automatically ***
+        echo "y" > /tmp/packages_answers
+        
         # Check if we need to run with extra parameters
         if grep -q "PACKAGE_GROUPS" "$PACKAGES_SCRIPT"; then
             # Extract available groups from script
@@ -284,9 +294,9 @@ install_packages() {
                         gum style --foreground 39 "Installing group $(gum style --bold --foreground 105 "$group") [$CURRENT_GROUP/$TOTAL_GROUPS]"
                         gum style --foreground 117 "$PROGRESS_BAR $PERCENT%"
                         
-                        # Run with spinner
+                        # Run with spinner and automatic answers
                         gum spin --spinner dot --title "$(gum style --foreground 39 "Installing $group packages...")" -- \
-                            bash "$PACKAGES_SCRIPT" "$group" || print_error "Failed to install $group packages"
+                            bash "$PACKAGES_SCRIPT" "$group" < /tmp/packages_answers || print_error "Failed to install $group packages"
                         
                         # Show success for this group
                         gum style --foreground 46 "✓ $(gum style --bold "$group") packages installed!"
@@ -298,13 +308,16 @@ install_packages() {
             else
                 # If no package groups defined, just run the script
                 gum spin --spinner points --title "$(gum style --foreground 39 "Installing packages...")" -- \
-                    bash "$PACKAGES_SCRIPT" || print_error "Package installation failed"
+                    bash "$PACKAGES_SCRIPT" < /tmp/packages_answers || print_error "Package installation failed"
             fi
         else
-            # Just run the script without parameters
+            # Just run the script without parameters but with automatic answers
             gum spin --spinner points --title "$(gum style --foreground 39 "Installing packages...")" -- \
-                bash "$PACKAGES_SCRIPT" || print_error "Package installation failed"
+                bash "$PACKAGES_SCRIPT" < /tmp/packages_answers || print_error "Package installation failed"
         fi
+        
+        # Remove temporary file
+        rm -f /tmp/packages_answers
         
         # Success message
         gum style --margin "1" --border double --padding "1 2" --border-foreground 46 "$(gum style --foreground 46 --bold "🎉 All packages installed successfully! 🎉")"
