@@ -36,7 +36,6 @@ set statusbar-v-padding 4
 set page-padding 5
 set window-height 1000
 set window-width 750
-set sandbox none
 set incremental-search true
 set synctex true
 set synctex-editor-command "code -g %{input}:%{line}"
@@ -77,7 +76,6 @@ map R rotate
 map p print
 
 map m mark_add
-map . mark_jump
 
 # Custom Shortcuts
 map <Space> navigate next
@@ -104,7 +102,6 @@ map G goto bottom
 
 # Bookmarks
 map bb mark_add
-map bd mark_evaluate
 
 # Fit Page
 map w adjust_window width
@@ -127,129 +124,8 @@ set scroll-wrap false
 set link-zoom false
 set link-hadjust false
 
-# Presentation Mode
-set presentation-page-padding 5
-
 # Document History
 set continuous-hist-save true
-
-# SyncTeX Support
-set synctex-editor-command "nvim +%{line} %{input}"
-
-# Startup Options
-set adjust-open width
-set scroll-page-aware true
-set advance-pages-per-row true# Key Bindings
-# =====================
-
-# Navigation
-map <C-n> navigate next
-map <C-p> navigate previous
-map <C-d> scroll half-down
-map <C-u> scroll half-up
-map <C-f> scroll full-down
-map <C-b> scroll full-up
-map <C-g> goto
-map [index] <C-g> goto
-
-# Zoom
-map <C-=> zoom in
-map <C--> zoom out
-map <C-0> zoom default
-map <C-r> rotate
-
-# Color
-map <C-c> recolor
-
-# Mode Switching
-map <F5> toggle_fullscreen
-map <F8> toggle_index
-map <F11> toggle_fullscreen
-map [fullscreen] <F11> toggle_fullscreen
-
-# Page Layout
-map D toggle_page_mode
-map r reload
-map R rotate
-map p print
-
-map m mark_add
-map . mark_jump
-
-# Custom Shortcuts
-map <Space> navigate next
-map <S-Space> navigate previous
-map <BackSpace> scroll full-up
-
-# Mouse Bindings
-map <Button2> zoom in
-map <Button3> zoom out
-
-# Enhanced Navigation
-map j scroll down 5
-map k scroll up 5
-map h scroll left 5
-map l scroll right 5
-map J scroll down 20
-map K scroll up 20
-map H scroll left 20
-map L scroll right 20
-map <C-j> navigate next
-map <C-k> navigate previous
-map gg goto top
-map G goto bottom
-map <Home> goto top
-map <End> goto bottom
-
-
-# Bookmarks
-map bb mark_add
-map bm show_bookmarks
-map bd mark_evaluate
-
-# Fit Page
-map w adjust_window width
-map e adjust_window best-fit
-map E adjust_window fit-height
-
-# Copy Text
-map y selection_copy
-map <C-c> selection_copy
-
-# =====================
-# Document Settings
-# =====================
-set recolor true
-set recolor-keephue true
-set recolor-darkcolor "#cdd6f4"
-set recolor-lightcolor "#1e1e2e"
-set recolor-reverse-video true
-
-# Render Settings
-set render-loading-bg "#1e1e2e"
-set render-loading-fg "#cdd6f4"
-set scroll-wrap false
-set link-zoom false
-set link-hadjust false
-
-# Presentation Mode
-set presentation-view false
-set presentation-page-padding 5
-set advance-on-keystroke true
-
-# Document History
-set database "sqlite"
-set continuous-hist-save true
-
-# Search Settings
-set abort-clear-search true
-set highlight-search-color "rgba(245,194,231,0.5)"
-set highlight-active-color "rgba(203,166,247,0.5)"
-set search-hadjust true
-
-# Form Settings
-set override-fdp true
-set override-fdl true
 
 # SyncTeX Support
 set synctex-editor-command "nvim +%{line} %{input}"
