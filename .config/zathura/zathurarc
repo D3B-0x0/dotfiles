@@ -30,11 +30,6 @@ set show-hidden true
 set show-directories true
 set show-recent 10
 
-# Search Settings
-set highlight-color "#f38ba8"
-set highlight-active-color "#f38ba8"
-set search-hadjust true
-
 # =====================
 # Key Bindings
 # =====================
@@ -57,11 +52,6 @@ map <C-r> rotate
 
 #Color
 map <C-c> recolor
-# Search
-map / search
-map ? search backward
-map n search forward
-map N search backward
 
 # Mode Switching
 map <F5> toggle_fullscreen
