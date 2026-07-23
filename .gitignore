@@ -1,0 +1,31 @@
+# SSH keys
+id_ed25519
+id_ed25519.pub
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Runtime / state files
+*.log
+*.pid
+*.lock
+*.sock
+cache/
+state/
+
+# Herdr runtime
+.config/herdr/*.log
+.config/herdr/*.sock
+.config/herdr/.plugins.lock
+.config/herdr/session*.json
+
+# Local bin (not tracked)
+.local/
+
+# OS / editor junk
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store

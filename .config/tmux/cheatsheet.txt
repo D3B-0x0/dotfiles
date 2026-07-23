@@ -1,0 +1,110 @@
+╔══════════════════════════════════════════════════════════╗
+║                    TMUX CHEATSHEET                       ║
+╚══════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────┐
+│  CUSTOM ZELLIJ-STYLE (no prefix needed)                 │
+├─────────────────────────────────────────────────────────┤
+│  Alt+n            New window                            │
+│  Alt+c            Close window                          │
+│  Alt+,            Rename window                         │
+│  Alt+Left/Right   Prev / next window                    │
+│  Alt+v            Split pane horizontally               │
+│  Alt+s            Split pane vertically                 │
+│  Alt+h/j/k/l      Navigate panes                        │
+│  Alt+H/J/K/L      Resize pane                           │
+│  Alt+z            Toggle zoom on current pane           │
+│  Alt+f            Toggle floating scratchpad            │
+│  Alt+Space        Session switcher (fzf)                │
+│  Alt+x            Kill current session                  │
+│  Alt+Enter        Enter copy mode                       │
+└─────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────┐
+│  PREFIX KEYBINDS (C-a first, then:)                     │
+├─────────────────────────────────────────────────────────┤
+│  C-a              Send prefix to other apps             │
+│  r                Reload tmux config                    │
+│  ?                Toggle this help                      │
+│                                                         │
+│  --- Windows ---                                        │
+│  c                Create window                         │
+│  ,                Rename window                         │
+│  .                Move window (prompt for index)        │
+│  0-9              Switch to window N                    │
+│  p / n            Previous / next window                │
+│  l                Last active window                    │
+│  f                Find window by name                   │
+│  w                Interactive window list               │
+│  &                Kill window                           │
+│  S-left           Swap window left                      │
+│  S-right          Swap window right                     │
+│                                                         │
+│  --- Panes ---                                          │
+│  %                Split horizontally                    │
+│  "                Split vertically                      │
+│  o                Next pane                             │
+│  ;                Last active pane                      │
+│  z                Toggle pane zoom                      │
+│  !                Break pane to new window              │
+│  q                Show pane numbers (type to jump)      │
+│  { / }            Swap pane left / right                │
+│  x                Kill pane                             │
+│  space            Toggle pane layouts                   │
+│  M-o              Rotate panes                          │
+│  C-o              Move pane (swap direction)            │
+│  arrows           Select pane by direction              │
+│                                                         │
+│  --- Sessions ---                                       │
+│  (                Switch to previous session            │
+│  )                Switch to next session                │
+│  s                Interactive session list              │
+│  d                Detach from session                   │
+│  $                Rename session                        │
+│                                                         │
+│  --- Misc ---                                           │
+│  t                Show time                             │
+│  ~                Show message log                      │
+│  [                Enter copy mode                       │
+│  ]                Paste buffer                          │
+│  #                List paste buffers                    │
+│  =                Choose paste buffer                   │
+│  C-b              Page up in pane                       │
+│  C-z              Suspend tmux                          │
+│  :                Command prompt                        │
+└─────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────┐
+│  COPY MODE (Alt+Enter or prefix+[)                      │
+├─────────────────────────────────────────────────────────┤
+│  v                Begin character selection             │
+│  C-v              Toggle rectangle selection            │
+│  y                Yank (copy) selection to clipboard    │
+│  Y                Copy whole line                       │
+│  /                Search forward (tmux-copycat)         │
+│  ?                Search backward                       │
+│  n / N            Next / prev search match              │
+│  g / G            Top / bottom of buffer                │
+│  H / M / L        Top / middle / bottom of screen       │
+│  C-b / C-f        Page up / down                        │
+│  C-u / C-d        Half page up / down                   │
+│  Escape / q       Cancel / quit copy mode               │
+│  Enter            Copy selection & exit                 │
+│  Space            Start selection                       │
+│  w / b            Word forward / backward               │
+│  f                Jump to next character                │
+│  F                Jump to previous character            │
+│  t                Jump before next character            │
+│  T                Jump before previous character        │
+│  ; / ,            Repeat / reverse last jump            │
+└─────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────┐
+│  PLUGINS                                                │
+├─────────────────────────────────────────────────────────┤
+│  prefix+I         Install TPM plugins                   │
+│  prefix+U         Update TPM plugins                    │
+│  prefix+alt+u     Remove unused TPM plugins             │
+│  prefix+C-s       Save session (tmux-resurrect)         │
+│  prefix+C-r       Restore session (tmux-resurrect)      │
+└─────────────────────────────────────────────────────────┘

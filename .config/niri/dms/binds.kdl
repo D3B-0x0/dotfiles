@@ -1,0 +1,55 @@
+binds {
+    Ctrl+Alt+Delete { spawn "dms" "ipc" "call" "processlist" "focusOrToggle"; }
+    Ctrl+XF86AudioLowerVolume allow-when-locked=true { spawn "dms" "ipc" "call" "mpris" "decrement" "5"; }
+    Ctrl+XF86AudioRaiseVolume allow-when-locked=true { spawn "dms" "ipc" "call" "mpris" "increment" "5"; }
+    Mod+M { spawn "dms" "ipc" "call" "processlist" "focusOrToggle"; }
+    Mod+N { spawn "dms" "ipc" "call" "notifications" "toggle"; }
+    Mod+Shift+Comma { spawn "dms" "ipc" "call" "settings" "focusOrToggle"; }
+    Mod+Shift+N { spawn "dms" "ipc" "call" "notepad" "toggle"; }
+    Mod+Shift+W { spawn "dms" "ipc" "call" "window-rules" "toggle"; }
+    Mod+Space { spawn "dms" "ipc" "call" "spotlight-bar" "toggle"; }
+    Mod+V { spawn "dms" "ipc" "call" "clipboard" "toggle"; }
+    Mod+X { spawn "dms" "ipc" "call" "powermenu" "toggle"; }
+    Mod+Y { spawn "dms" "ipc" "call" "dankdash" "wallpaper"; }
+    Super+Alt+L { spawn "dms" "ipc" "call" "lock" "lock"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "dms" "ipc" "call" "audio" "decrement" "5"; }
+    XF86AudioMicMute allow-when-locked=true { spawn "dms" "ipc" "call" "audio" "micmute"; }
+    XF86AudioMute allow-when-locked=true { spawn "dms" "ipc" "call" "audio" "mute"; }
+    XF86AudioNext allow-when-locked=true { spawn "dms" "ipc" "call" "mpris" "next"; }
+    XF86AudioPause allow-when-locked=true { spawn "dms" "ipc" "call" "mpris" "playPause"; }
+    XF86AudioPlay allow-when-locked=true { spawn "dms" "ipc" "call" "mpris" "playPause"; }
+    XF86AudioPrev allow-when-locked=true { spawn "dms" "ipc" "call" "mpris" "previous"; }
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "dms" "ipc" "call" "audio" "increment" "5"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "dms" "ipc" "call" "brightness" "decrement" "5" ""; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn "dms" "ipc" "call" "brightness" "increment" "5" ""; }
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; }
+    Mod+Alt+Space { toggle-window-floating; }
+    Mod+Comma { consume-window-into-column; }
+    Mod+Shift+T { toggle-column-tabbed-display; }
+    Mod+A { spawn "wezterm" "-e" "herdr"; }
+    Mod+Alt+E { spawn "thunar"; }
+    Mod+Alt+O { spawn "obsidian"; }
+    Mod+Alt+S { spawn "onlyoffice"; }
+    Mod+Ctrl+Escape { spawn "missioncenter"; }
+    Mod+Ctrl+V { spawn "pavucontrol"; }
+    Mod+Ctrl+W { spawn "helium" "--incognito"; }
+    Mod+E { spawn "nautilus" "-w"; }
+    Mod+P { spawn "zathura"; }
+    Mod+Shift+C { spawn "hyprpicker" "-a"; }
+    Mod+Shift+L { spawn-sh "systemctl suspend"; }
+    Mod+Shift+M { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    Mod+T hotkey-overlay-title="Open a Terminal: wezterm" { spawn "wezterm"; }
+    Mod+W { spawn "helium"; }
+    XF86KbdBrightnessDown { spawn "asusctl" "leds" "prev"; }
+    XF86KbdBrightnessUp { spawn "asusctl" "leds" "next"; }
+    XF86Launch1 { spawn "rog-control-center"; }
+    XF86Launch3 { spawn "asusctl" "aura" "effect" "--next-mode"; }
+}

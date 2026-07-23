@@ -1,0 +1,615 @@
+# =============================================================================
+# ENHANCED ZSH ALIASES - TERMINAL WARRIOR EDITION
+# =============================================================================
+
+# Basic aliases
+alias v='nvim'
+alias c='clear'
+alias pamcan='pacman'
+alias i='sudo pacman -S'
+alias s='paru -Ss'
+alias u='sudo pacman -Rns'
+alias update='sudo pacman -Syyu'
+alias open='xdg-open'
+alias immichstart='cd "$(zoxide query imm)" || return; docker compose up -d && echo "✨ Immich started"; cd - >/dev/null'
+alias immichstop='cd "$(zoxide query imm)" || return; docker compose down && echo "👋 Immich stopped"; cd - >/dev/null'
+alias term='wezterm'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias mkdir='mkdir -p'
+alias df='df -h'
+alias free='free -h'
+
+# -------------------------------------------
+# Suffix Aliases - Open Files by Extension
+# -------------------------------------------
+# Just type the filename to open it with the associated program
+alias -s json=jless
+alias -s md=bat
+alias -s go='$EDITOR'
+alias -s rs='$EDITOR'
+alias -s txt=bat
+alias -s log=bat
+alias -s py='$EDITOR'
+alias -s js='$EDITOR'
+alias -s ts='$EDITOR'
+alias -s html=open  
+
+
+# =============================================================================
+# EZA ALIASES (Modern ls replacement)
+# =============================================================================
+alias ls='eza --icons=always'
+alias ll='eza -lh --icons=always'
+alias la='eza -lah --icons=always'
+alias lt='eza --tree --icons=always'
+alias l.='eza -a | grep "^\."'
+alias lz='eza -lahS --icons=always'  # Sort by size
+alias lm='eza -lah --icons=always --sort=modified'  # Sort by modified
+alias lg='eza -lah --icons=always --git'  # Show git status
+
+# =============================================================================
+# FD ALIASES (Modern find replacement)
+# =============================================================================
+# alias find='fd'
+alias fdf='fd -t f'
+alias fdd='fd -t d'
+alias fdh='fd -H'
+alias fda='fd -H -I'
+alias fds='fd -t f -S +10M'  # Find large files
+alias fdx='fd -t f -x'  # Find executable files
+alias fdr='fd --changed-within'  # Find recently changed files
+
+# =============================================================================
+# MODERN ALTERNATIVES
+# =============================================================================
+alias cat='bat'
+alias man='batman'
+alias htop='btop'  # Even better than htop
+alias df='duf'  # Modern du
+alias du='dust'
+alias ps='procs'  # Modern ps
+
+# =============================================================================
+# RIPGREP ALIASES (Advanced text search)
+# =============================================================================
+alias rg='rg --smart-case'
+alias rgf='rg --files-with-matches'
+alias rgi='rg -i'
+alias rgw='rg -w'
+alias rgl='rg -l'
+alias rgv='rg -v'
+alias rgc='rg --count'
+alias rga='rg --hidden --no-ignore'  # Search all files
+alias rgj='rg --type json'
+alias rgp='rg --type py'
+alias rgr='rg --type rust'
+alias rgjs='rg --type js'
+
+# =============================================================================
+# GIT ALIASES (Comprehensive Git workflow)
+# =============================================================================
+# Basic git operations
+alias g='git'
+alias gsc='git status'
+alias gss='git status -s'  # Short status
+alias ga='git add'
+alias gaa='git add .'
+alias gap='git add -p'  # Interactive add
+alias gc='git commit -m'
+alias gca='git commit -am'
+alias gcm='git commit --amend'
+alias gp='git push'
+alias gl='git pull'
+alias gf='git fetch'
+alias gfa='git fetch --all'
+
+# Branch management
+alias gb='git branch'
+alias gba='git branch -a'
+alias gbd='git branch -d'
+alias gbD='git branch -D'
+alias gco='git checkout'
+alias gcb='git checkout -b'
+alias gsw='git switch'
+alias gswc='git switch -c'
+alias gm='git merge'
+alias gma='git merge --abort'
+alias gmc='git merge --continue'
+
+# Advanced git operations
+alias glog='git log --oneline --graph --all'
+alias glg='git log --graph --pretty=format:"%C(yellow)%h%Creset -%C(red)%d%Creset %s %C(green)(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit'
+alias gsh='git show'
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias gdh='git diff HEAD'
+alias gdt='git difftool'
+alias gr='git reset'
+alias grh='git reset --hard'
+alias grs='git reset --soft'
+alias grv='git revert'
+alias gcp='git cherry-pick'
+alias gcpa='git cherry-pick --abort'
+alias gcpc='git cherry-pick --continue'
+
+# Stash operations
+alias gsta='git stash'
+alias gstp='git stash pop'
+alias gstl='git stash list'
+alias gsts='git stash show'
+alias gstd='git stash drop'
+alias gstc='git stash clear'
+
+# Remote operations
+alias gra='git remote add'
+alias grr='git remote rm'
+alias grv='git remote -v'
+alias grpo='git remote prune origin'
+alias gpom='git push origin main'
+alias gpod='git push origin develop'
+alias gplom='git pull origin main'
+alias gplod='git pull origin develop'
+
+# Rebase operations
+alias grb='git rebase'
+alias grba='git rebase --abort'
+alias grbc='git rebase --continue'
+alias grbi='git rebase -i'
+alias grbs='git rebase --skip'
+
+# Git utilities
+alias gclean='git clean -fd'
+alias gtag='git tag'
+alias gtagd='git tag -d'
+alias gwip='git add -A && git commit -m "WIP"'
+alias gunwip='git log -n 1 | grep -q -c "WIP" && git reset HEAD~1'
+alias gundo='git reset --soft HEAD~1'
+alias gbranch='git branch --sort=-committerdate'
+alias gsize='git count-objects -vH'
+alias gauth='git shortlog -sne'  # Show authors
+alias gfp='git push --force-with-lease'  # Safe force push
+
+# =============================================================================
+# NETWORKING ALIASES
+# =============================================================================
+# Basic networking
+alias ports='netstat -tulanp'
+alias portsl='ss -tuln'  # Modern netstat
+alias ipa='ip -c a'              # Show IP addresses in color  
+alias ipr='ip route show'        # Show routing table
+alias iplink='ip link show'      # Show network interfaces
+alias ip6='ip -6 addr show'      # Show IPv6 addresses
+alias iproute='ip route'         # Full route command access
+alias myip='curl -s ifconfig.me'
+alias localip='hostname -i | awk "{print \$1}"'
+alias ping='ping -c 10'
+alias ping6='ping6 -c 10'
+alias traceroute='traceroute -I'
+alias mtr='mtr --show-ips'
+
+# Network diagnostics
+alias netstat='ss -tuln'
+alias netconns='ss -tuap'
+alias speedtest='speedtest-cli'
+alias netscan='nmap -sn'
+alias portscan='nmap -sS'
+alias hostscan='nmap -sV'
+alias vulnscan='nmap -sV --script vuln'
+alias webhead='curl -I'
+alias dnsdig='dig +short'
+alias dnslookup='nslookup'
+alias whois='whois -H'
+alias tcpdump='sudo tcpdump -i any'
+
+# Network monitoring
+alias netwatch='watch -n 1 "ss -tuln"'
+alias bandwidth='sudo iftop -i wlan0'
+alias netlisten='ss -lntu'
+alias netestablished='ss -tn state established'
+alias netports='ss -tulpn'
+
+# =============================================================================
+# CYBERSECURITY & PENETRATION TESTING
+# =============================================================================
+# Nmap variants
+alias nmapquick='nmap -T4 -F'
+alias nmapfast='nmap -T5 -n -sS'
+alias nmapudp='nmap -sU'
+alias nmapfull='nmap -T4 -A -v'
+alias nmapstealthsyn='nmap -sS'
+alias nmapstealth='nmap -sF -sX -sN'
+alias nmapxmas='nmap -sX'
+alias nmapfin='nmap -sF'
+alias nmapnull='nmap -sN'
+alias nmapwindow='nmap -sW'
+alias nmapscript='nmap --script'
+
+# Web application testing
+alias dirb='dirb'
+alias gobuster='gobuster dir'
+alias ffuf='ffuf -c'
+alias wfuzz='wfuzz -c'
+alias sqlmap='sqlmap'
+alias burpsuite='java -jar /opt/burpsuite/burpsuite.jar'
+alias zap='owasp-zap'
+alias nikto='nikto'
+
+# Metasploit & exploitation
+alias msfconsole='msfconsole'
+alias msfvenom='msfvenom'
+alias searchsploit='searchsploit'
+alias exploit='searchsploit'
+
+# Hash cracking & crypto
+alias hashcat='hashcat'
+alias john='john'
+alias hydra='hydra'
+alias medusa='medusa'
+alias md5='md5sum'
+alias b64encode='base64'
+alias b64decode='base64 -d'
+
+# Security monitoring
+alias fail2ban='sudo fail2ban-client status'
+alias ufw='sudo ufw'
+alias firewall='sudo ufw status verbose'
+alias iptables='sudo iptables'
+alias audit='sudo aureport'
+alias syslog='sudo tail -f /var/log/syslog'
+alias auth='sudo tail -f /var/log/auth.log'
+alias secure='sudo tail -f /var/log/secure'
+
+# =============================================================================
+# SYSTEM MONITORING & PERFORMANCE
+# =============================================================================
+alias temp='watch sensors'
+alias iostat='iostat -x 1'
+alias vmstat='vmstat 1'
+alias sar='sar -u 1'
+alias mem='free -h && echo && vmstat -s'
+alias cpu='mpstat'
+alias disk='ncdu --exclude-caches'
+alias diskusage='command df -h | bat -l fstab -p'
+alias inodes='df -i'
+alias load='uptime'
+
+# =============================================================================
+# DOCKER & CONTAINERS
+# =============================================================================
+alias d='docker'
+alias dps='docker ps -a'
+alias di='docker images'
+alias drmi='docker rmi'
+alias drm='docker rm'
+alias dex='docker exec -it'
+alias dlog='docker logs -f'
+alias dstop='docker stop'
+alias dstart='docker start'
+alias drestart='docker restart'
+alias dbuild='docker build -t'
+alias dpull='docker pull'
+alias dpush='docker push'
+alias drun='docker run -it --rm'
+alias dkill='docker kill'
+alias dprune='docker system prune -af'
+alias dvol='docker volume ls'
+alias dnet='docker network ls'
+alias dstats='docker stats'
+
+# Docker Compose
+alias dc='docker-compose'
+alias dcup='docker-compose up -d'
+alias dcdown='docker-compose down'
+alias dcrestart='docker-compose restart'
+alias dclogs='docker-compose logs -f'
+alias dcbuild='docker-compose build'
+alias dcpull='docker-compose pull'
+
+# =============================================================================
+# DEVELOPMENT TOOLS
+# =============================================================================
+# Python
+alias py='python3'
+alias pip='pip3'
+alias venv='python3 -m venv env && source env/bin/activate'
+alias pytest='python3 -m pytest'
+alias black='black .'
+alias flake8='flake8 .'
+alias mypy='mypy .'
+
+# Node.js
+alias n='node'
+alias npm='npm'
+alias npx='npx'
+alias yarn='yarn'
+alias nls='npm list'
+alias nig='npm install -g'
+alias nis='npm install --save'
+alias nid='npm install --save-dev'
+alias nrs='npm run start'
+alias nrt='npm run test'
+alias nrb='npm run build'
+
+# Other languages
+alias rust='rustc'
+alias cargo='cargo'
+alias go='go'
+alias java='java'
+alias javac='javac'
+alias gcc='gcc'
+alias gpp='g++'
+
+# =============================================================================
+# FILE OPERATIONS & SEARCH
+# =============================================================================
+alias search='fd -H -E .git -E node_modules | rg'
+alias recent='fd -H -t f -d 2 --changed-within 24h'
+alias biggest='fd -H -t f -X du -sh | sort -rh | head -n 10'
+alias backup='rsync -avh --progress'
+alias sync='sync; echo 3 > /proc/sys/vm/drop_caches'
+alias permfix='sudo chmod -R u+rwX'
+alias compress='tar -czf'
+alias decompress='tar -xzf'
+
+# =============================================================================
+# TERMINAL UTILITIES
+# =============================================================================
+alias h='history | grep'
+alias path='echo $PATH | tr ":" "\n"'
+alias weather='curl wttr.in'
+alias serve='python -m http.server'
+alias tree='eza --tree'
+alias logs='tail -f /var/log/pacman.log'
+alias trace='traceroute'
+alias safecp='cp -i -v'
+alias safemv='mv -i -v'
+alias paclog='cat /var/log/pacman.log | less'
+alias orphans='pacman -Qdt'
+alias cleanup='sudo pacman -Rns $(pacman -Qdtq)'
+
+# =============================================================================
+# BTRFS OPERATIONS
+# =============================================================================
+alias btrfsbal='sudo btrfs balance start -dusage=50 /'
+alias snapdel='sudo btrfs subvolume delete'
+alias btrfsshow='sudo btrfs filesystem show'
+alias btrfsusage='sudo btrfs filesystem usage /'
+alias snaplist='sudo btrfs subvolume list /'
+alias snapcreate='sudo btrfs subvolume snapshot'
+
+# =============================================================================
+# XFS OPERATIONS
+# =============================================================================
+# XFS health check and repair
+alias xfscheck='sudo xfs_repair -n'      # Check filesystem (no changes)
+alias xfsrepair='sudo xfs_repair'        # Repair filesystem
+alias xfsforce='sudo xfs_repair -L'      # Force repair (zeroes log)
+
+# XFS information and stats
+alias xfsinfo='xfs_info'                 # Show XFS filesystem info
+alias xfsstats='cat /proc/fs/xfs/stat'   # XFS statistics
+alias xfsquota='xfs_quota -x'            # XFS quota management
+
+# XFS defragmentation (rarely needed)
+alias xfsdefrag='sudo xfs_fsr'           # Defragment XFS filesystem
+alias xfsdefragfile='sudo xfs_fsr -f'    # Defragment specific file
+
+# XFS growth (if needed)
+alias xfsgrow='sudo xfs_growfs'          # Grow XFS filesystem
+
+# =============================================================================
+# MOUNT/UNMOUNT OPERATIONS
+# =============================================================================
+alias mountusb='sudo mount /dev/sdb1 /mnt/usb'
+alias umountusb='sudo umount /mnt/usb'
+alias mounts='mount | column -t'
+alias lsblk='lsblk -f | bat -l conf -p'
+
+# =============================================================================
+# FUN & EXTRAS
+# =============================================================================
+alias matrix='cmatrix'
+alias quote='fortune'
+alias clock='tty-clock -c'
+alias todo='nvim ~/.todo.md'
+alias music='mpv --no-video'
+
+# =============================================================================
+# ENHANCED FUNCTIONS
+# =============================================================================
+
+# Quick open with file type detection
+fo() {
+    file="$1"
+    case "$(file --mime-type -b "$file")" in
+        text/*) nvim "$file" ;;
+        image/*) feh "$file" ;;
+        video/*) mpv "$file" ;;
+        application/pdf) zathura "$file" ;;
+        *) xdg-open "$file" ;;
+    esac
+}
+
+# Enhanced compile and run function
+run() {
+    if [ -z "$1" ]; then
+        echo "Usage: run <filename>"
+        return 1
+    fi
+
+    file="$1"
+    ext="${file##*.}"
+    name="${file%.*}"
+
+    case "$ext" in
+        c)
+            clang -Wall -Wextra -pedantic -lm -O2 "$file" -o "$name" && "./$name"
+            ;;
+        cpp|cc|cxx)
+            clang++ -Wall -Wextra -pedantic -O2 -lm  "$file" -o "$name" && "./$name"
+            ;;
+        rs)
+            cargo run
+            ;;
+        py)
+            python3 "$file"
+            ;;
+        go)
+            go run "$file"
+            ;;
+        sh)
+            bash "$file"
+            ;;
+        js)
+            node "$file"
+            ;;
+        ts)
+            ts-node "$file"
+            ;;
+        *)
+            echo "Unsupported file type: $ext"
+            return 1
+            ;;
+    esac
+}
+
+# Git clone and cd into directory
+gclone() {
+    git clone "$1" && cd "$(basename "$1" .git)"
+}
+
+
+
+# Quick HTTP server with directory listing
+httpserver() {
+    local port=${1:-8000}
+    python3 -m http.server "$port"
+}
+
+
+# Find and kill process by name
+killprocess() {
+    ps aux | grep -i "$1" | grep -v grep | awk '{print $2}' | xargs kill -9
+}
+
+# System information summary
+sysinfo() {
+    echo "=== System Information ==="
+    echo "Hostname: $(hostname)"
+    echo "Kernel: $(uname -r)"
+    echo "Uptime: $(uptime -p)"
+    echo "CPU: $(lscpu | grep 'Model name' | cut -d':' -f2 | xargs)"
+    echo "Memory: $(free -h | grep Mem | awk '{print $3"/"$2}')"
+    echo "Disk: $(command df -h / | awk 'NR==2 {print $3"/"$2" ("$5" used)"}')"
+    echo "Load: $(uptime | awk -F'load average:' '{print $2}')"
+    echo "=========================="
+}
+
+# =============================================================================
+# SECURITY FUNCTIONS
+# =============================================================================
+
+# Generate secure password
+genpass() {
+    local length=${1:-20}
+    openssl rand -base64 32 | head -c "$length" && echo
+}
+
+# Check if port is open
+portcheck() {
+    local host=${1:-localhost}
+    local port=$2
+    nc -z -v "$host" "$port"
+}
+
+# Function to encrypt files or directories
+encrypt() {
+    if [ $# -eq 0 ]; then
+        echo "Usage: encrypt <file_or_directory> [output_name]"
+        echo "Encrypts and compresses the specified file or directory"
+        return 1
+    fi
+
+    local input="$1"
+    local output="${2:-${input##*/}.gpg}"
+    
+    if [ ! -e "$input" ]; then
+        echo "Error: '$input' does not exist"
+        return 1
+    fi
+
+    echo "Encrypting '$input'..."
+    
+    if [ -d "$input" ]; then
+        # It's a directory - tar and compress it
+        tar czf - "$input" | gpg --symmetric --output "$output"
+    else
+        # It's a file - compress and encrypt
+        gzip -c "$input" | gpg --symmetric --output "$output"
+    fi
+
+    if [ $? -eq 0 ]; then
+        echo "✓ Successfully encrypted to: $output"
+        echo "  Original: $(command du -h "$input" | cut -f1)"
+        echo "  Encrypted: $(command du -h "$output" | cut -f1)"
+    else
+        echo "✗ Encryption failed"
+        return 1
+    fi
+}
+
+# Function to decrypt and extract files
+decrypt() {
+    if [ $# -eq 0 ]; then
+        echo "Usage: decrypt <encrypted_file> [output_directory]"
+        echo "Decrypts and extracts the encrypted file"
+        return 1
+    fi
+
+    local input="$1"
+    local output_dir="${2:-.}"
+    
+    if [ ! -f "$input" ]; then
+        echo "Error: '$input' does not exist or is not a file"
+        return 1
+    fi
+
+    echo "Decrypting '$input'..."
+    
+    # Try to decrypt and determine if it's a tar archive or single file
+    if gpg --decrypt "$input" 2>/dev/null | tar tzf - >/dev/null 2>&1; then
+        # It's a tar archive
+        gpg --decrypt "$input" | tar xzf - -C "$output_dir"
+        if [ $? -eq 0 ]; then
+            echo "✓ Successfully decrypted and extracted to: $output_dir"
+        else
+            echo "✗ Decryption or extraction failed"
+            return 1
+        fi
+    else
+        # It's a single compressed file - extract the original filename
+        local base_name="${input%.gpg}"
+        base_name="${base_name%.gz}"
+        local output_file="${output_dir}/${base_name##*/}"
+        
+        gpg --decrypt "$input" | gunzip > "$output_file" 2>/dev/null
+        
+        if [ $? -eq 0 ]; then
+            echo "✓ Successfully decrypted to: $output_file"
+        else
+            # Maybe it wasn't gzipped, try direct decryption
+            gpg --decrypt "$input" > "$output_file"
+            if [ $? -eq 0 ]; then
+                echo "✓ Successfully decrypted to: $output_file"
+            else
+                echo "✗ Decryption failed"
+                return 1
+            fi
+        fi
+    fi
+}
+
+# =============================================================================
+# END OF ALIASES
+# =============================================================================
