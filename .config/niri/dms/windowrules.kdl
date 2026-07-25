@@ -1,12 +1,2 @@
 // DMS Window Rules - Managed by DankMaterialShell
 // Do not edit manually - changes may be overwritten
-
-// @id=wr_1784838599001215985 @name=org.wezfurlong.wezterm
-window-rule {
-    match app-id="^org.wezfurlong.wezterm$"
-    opacity 0.86
-    background-effect {
-        blur true
-        xray true
-    }
-}

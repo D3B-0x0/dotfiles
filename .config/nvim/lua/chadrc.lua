@@ -58,7 +58,9 @@ local options = {
     excluded_groups = { "terminal (t)", "autopairs", "Nvim", "Opens" }, -- can add group name or with mode
   },
 
-  mason = { cmd = true, pkgs = {} },
+  mason = { cmd = true, pkgs = {
+    "marksman",
+  } },
 
 
   nvdash = {

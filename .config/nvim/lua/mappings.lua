@@ -38,3 +38,31 @@ end, { desc = "Increment under cursor" })
 map("n", "-", function()
   vim.cmd("normal! \\<C-x>")
 end, { desc = "Decrement under cursor" })
+
+-- Markdown keymaps
+map("n", ",mp", function()
+  if vim.bo.filetype == "markdown" or vim.bo.filetype == "mdx" then
+    require("peek").open()
+  end
+end, { desc = "Peek markdown preview" })
+
+map("n", ",mc", function()
+  if vim.bo.filetype == "markdown" or vim.bo.filetype == "mdx" then
+    vim.cmd "ToggleCheckbox"
+  end
+end, { desc = "Toggle checkbox" })
+
+map("n", ",mt", function()
+  if vim.bo.filetype == "markdown" or vim.bo.filetype == "mdx" then
+    vim.cmd "RenderMarkdown toggle"
+  end
+end, { desc = "Toggle render markdown" })
+
+-- Quick access to Obsidian vault
+map("n", ",ov", function()
+  require("telescope.builtin").find_files { cwd = vim.fn.expand("~/Documents/homelab") }
+end, { desc = "Find files in Obsidian vault" })
+
+map("n", ",og", function()
+  require("telescope.builtin").live_grep { cwd = vim.fn.expand("~/Documents/homelab") }
+end, { desc = "Grep in Obsidian vault" })

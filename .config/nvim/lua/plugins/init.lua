@@ -28,7 +28,32 @@ return {
     config = function()
       vim.g.opencode_opts = {}
       vim.o.autoread = true
-      -- Keymaps removed from here - we'll add them in mappings.lua instead
     end,
+  },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown", "mdx" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opts = {
+      completions = { enabled = true },
+    },
+  },
+  {
+    "toppair/peek.nvim",
+    ft = { "markdown", "mdx" },
+    build = "deno task --quiet build:fast",
+    config = function()
+      require("peek").setup()
+      vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+      vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+    end,
+  },
+  {
+    "bullets-vim/bullets.vim",
+    ft = { "markdown", "mdx", "text" },
+  },
+  {
+    "tadmccorkle/markdown.nvim",
+    ft = { "markdown", "mdx" },
   },
 }

@@ -36,7 +36,7 @@ CONFIG_ENABLE_PREVIEW_IMAGES="true"
 
 # The tool used to render previews in the terminal
 # Options: chafa, icat, imgcat (Default: chafa)
-CONFIG_IMAGE_RENDERER="chafa"
+CONFIG_IMAGE_RENDERER="icat"
 
 # Extra arguments for specific image renderers
 CONFIG_CHAFA_ARGS=""

@@ -13,6 +13,7 @@ local servers = {
   "dockerls",    -- Dockerfile syntax
   "terraformls", -- optional, IaC stuff
   "lua_ls",      -- for Neovim config tweaks
+  "marksman",    -- Markdown LSP
 }
 
 vim.lsp.enable(servers)
