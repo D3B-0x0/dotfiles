@@ -26,6 +26,7 @@ fail()    { echo -e "${RED}[FAIL]${NC} $1"; }
 # --- Sync lists ---
 DIRS_TO_SYNC=(
     alacritty
+    atuin
     bat
     btop
     cava
