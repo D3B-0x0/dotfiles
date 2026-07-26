@@ -39,13 +39,12 @@ return {
     },
   },
   {
-    "toppair/peek.nvim",
+    "iamcco/markdown-preview.nvim",
     ft = { "markdown", "mdx" },
-    build = "deno task --quiet build:fast",
+    build = "cd app && npm install",
     config = function()
-      require("peek").setup()
-      vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
-      vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+      vim.g.mkdp_auto_close = 0
+      vim.g.mkdp_browser = vim.env.BROWSER or "firefox"
     end,
   },
   {

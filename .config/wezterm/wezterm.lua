@@ -3,11 +3,10 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 -- appearance
-config.font = wezterm.font("JetBrainsMono Nerd Font")
--- config.font = wezterm.font("Maple Mono Normal NF")
+config.font = wezterm.font("Maple Mono NF CN")
 config.font_size = 13
 config.color_scheme = "dank-theme"
--- config.window_background_opacity = 0.8
+config.window_background_opacity = 0.9
 config.window_padding = {
   left = 5,
   right = 5,
@@ -26,6 +25,5 @@ config.window_close_confirmation = "NeverPrompt"
 config.automatically_reload_config = true
 config.audible_bell = "Disabled"
 config.adjust_window_size_when_changing_font_size = false
-config.harfbuzz_features = { "calt=0" }
 
 return config

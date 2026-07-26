@@ -1,2 +1,45 @@
 // DMS Window Rules - Managed by DankMaterialShell
 // Do not edit manually - changes may be overwritten
+
+// @id=wr_1785015099227815622 @name=org.wezfurlong.wezterm
+window-rule {
+    match app-id="^org.wezfurlong.wezterm$"
+    variable-refresh-rate true
+    background-effect {
+        blur true
+        xray true
+    }
+}
+
+// @id=wr_1785016121553873225 @name=codium
+window-rule {
+    match app-id="^codium$"
+    opacity 0.90
+    background-effect {
+        blur true
+        xray true
+    }
+}
+
+// @id=wr_1785016267076427351 @name=helium
+window-rule {
+    match app-id="^helium$"
+    opacity 0.90
+    variable-refresh-rate true
+    background-effect {
+        blur true
+        xray true
+        noise 0.21
+        saturation 1
+    }
+}
+
+// @id=wr_1785016407582275645 @name=kitty
+window-rule {
+    match app-id="^kitty$"
+    opacity 0.89
+    background-effect {
+        blur true
+        xray true
+    }
+}

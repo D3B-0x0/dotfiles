@@ -9,7 +9,7 @@ onboarding = false
 # Built-in themes: catppuccin, terminal, tokyo-night, dracula, nord,
 #                  gruvbox, one-dark, solarized, kanagawa, rose-pine,
 #                  vesper
-name = "catppuccin"
+name = "rose-pine"
 
 # Follow host terminal light/dark appearance and switch Herdr UI themes.
 # Existing manual behavior is unchanged unless this is true.
@@ -173,7 +173,7 @@ prompt_new_tab_name = true
 # pane_borders = false
 
 # Keep split panes visually separated instead of sharing divider borders.
-pane_gaps = true
+pane_gaps = false
 
 # Show detected/reported agent labels in split pane borders when no manual pane name is set.
 # show_agent_labels_on_pane_borders = false
@@ -235,7 +235,7 @@ manage_ssh_config = true
 
 [experimental]
 # Allow launching herdr from inside a herdr-managed pane.
-# allow_nested = false
+allow_nested = false
 # Experimental local Kitty graphics rendering for attached clients.
 # Requires a Kitty graphics-compatible outer terminal.
 kitty_graphics = true

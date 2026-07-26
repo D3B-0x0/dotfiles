@@ -42,9 +42,9 @@ end, { desc = "Decrement under cursor" })
 -- Markdown keymaps
 map("n", ",mp", function()
   if vim.bo.filetype == "markdown" or vim.bo.filetype == "mdx" then
-    require("peek").open()
+    vim.cmd "MarkdownPreviewToggle"
   end
-end, { desc = "Peek markdown preview" })
+end, { desc = "Toggle markdown preview in browser" })
 
 map("n", ",mc", function()
   if vim.bo.filetype == "markdown" or vim.bo.filetype == "mdx" then
