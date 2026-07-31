@@ -34,7 +34,7 @@ binds {
     Mod+Alt+Space { toggle-window-floating; }
     Mod+Comma { consume-window-into-column; }
     Mod+Shift+T { toggle-column-tabbed-display; }
-    Mod+A { spawn "wezterm" "-e" "herdr"; }
+    Mod+A { spawn "kitty" "-e" "herdr"; }
     Mod+Alt+E { spawn "thunar"; }
     Mod+Alt+O { spawn "obsidian"; }
     Mod+Alt+S { spawn "onlyoffice"; }
@@ -46,7 +46,7 @@ binds {
     Mod+Shift+C { spawn "hyprpicker" "-a"; }
     Mod+Shift+L { spawn-sh "systemctl suspend"; }
     Mod+Shift+M { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
-    Mod+T hotkey-overlay-title="Open a Terminal: wezterm" { spawn "wezterm"; }
+    Mod+T hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
     Mod+W { spawn "helium"; }
     XF86KbdBrightnessDown { spawn "asusctl" "leds" "prev"; }
     XF86KbdBrightnessUp { spawn "asusctl" "leds" "next"; }

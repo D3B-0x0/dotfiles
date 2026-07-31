@@ -1,96 +1,34 @@
 {
-    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
-    "logo": {
-        "source": "os",
-        "padding": {
-            "top": 1,
-            "left": 2
-        },
-        "color": {
-            "1": "cyan",
-            "2": "blue"
-        }
-    },
-    "display": {
-        "separator": " → ",
-        "color": {
-            "keys": "cyan",
-            "title": "blue"
-        }
-    },
-    "modules": [
-        {
-            "type": "title",
-            "keyWidth": 10
-        },
-        {
-            "type": "separator"
-        },
-        "break",
-        {
-            "type": "os",
-            "key": " OS",
-            "keyColor": "blue"
-        },
-        {
-            "type": "kernel",
-            "key": " Kernel",
-            "keyColor": "blue"
-        },
-        {
-            "type": "packages",
-            "key": " 󰏖 Packages",
-            "keyColor": "cyan"
-        },
-        {
-            "type": "shell",
-            "key": " Shell",
-            "keyColor": "green"
-        },
-        "break",
-        {
-            "type": "host",
-            "key": " 󰌢 Host",
-            "keyColor": "magenta"
-        },
-        {
-            "type": "cpu",
-            "key": " 󰻠 CPU",
-            "keyColor": "red"
-        },
-        {
-            "type": "gpu",
-            "key": " 󰍛 GPU",
-            "keyColor": "yellow",
-            "detectionMethod": "pci"
-        },
-        {
-            "type": "memory",
-            "key": " 󰑭 RAM",
-            "keyColor": "yellow"
-        },
-        {
-            "type": "disk",
-            "key": " 󰋊 Disk",
-            "keyColor": "blue"
-        },
-        "break",
-        {
-            "type": "uptime",
-            "key": " 󰔚 Uptime",
-            "keyColor": "green"
-        },
-        {
-            "type": "localip",
-            "key": " 󰩟 Local IP",
-            "keyColor": "cyan",
-            "format": "{ipv4}"
-        },
-        "break",
-        {
-            "type": "colors",
-            "paddingLeft": 2,
-            "symbol": "circle"
-        }
-    ]
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
+  "modules": [
+    "title",
+    "separator",
+    "os",
+    "host",
+    "kernel",
+    "uptime",
+    "packages",
+    "shell",
+    "display",
+    "de",
+    "wm",
+    "wmtheme",
+    "theme",
+    "icons",
+    "font",
+    "cursor",
+    "terminal",
+    "terminalfont",
+    "cpu",
+    "gpu",
+    "memory",
+    "swap",
+    "disk",
+    "localip",
+    "battery",
+    "poweradapter",
+    "locale",
+    "break",
+    "colors"
+  ]
 }

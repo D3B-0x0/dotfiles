@@ -4,7 +4,7 @@
 // @id=wr_1785015099227815622 @name=org.wezfurlong.wezterm
 window-rule {
     match app-id="^org.wezfurlong.wezterm$"
-    variable-refresh-rate true
+    opacity 0.92
     background-effect {
         blur true
         xray true
@@ -18,19 +18,6 @@ window-rule {
     background-effect {
         blur true
         xray true
-    }
-}
-
-// @id=wr_1785016267076427351 @name=helium
-window-rule {
-    match app-id="^helium$"
-    opacity 0.90
-    variable-refresh-rate true
-    background-effect {
-        blur true
-        xray true
-        noise 0.21
-        saturation 1
     }
 }
 

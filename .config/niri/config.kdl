@@ -575,6 +575,6 @@ include "dms/alttab.kdl"
 include "dms/wpblur.kdl"
 include "dms/layout.kdl"
 include "dms/colors.kdl"
-include "dms/animation.kdl"
+// include "dms/animation.kdl"
 
 include "dms-theme-sync.kdl"
