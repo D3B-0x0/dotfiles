@@ -121,6 +121,19 @@ prefix = "ctrl+a"
 # type = "pane"
 # command = "yazi"
 
+# Plugin actions
+[[keys.command]]
+key = "prefix+f"
+type = "plugin_action"
+command = "herdr-zoxide.browse"
+description = "browse zoxide dirs"
+
+[[keys.command]]
+key = "prefix+d"
+type = "plugin_action"
+command = "official.browser.status"
+description = "browser status"
+
 # Legacy indexed shortcut config is still parsed for compatibility.
 # Prefer switch_tab, switch_workspace, and focus_agent for new configs.
 # [keys.indexed]
@@ -170,7 +183,7 @@ confirm_close = true
 prompt_new_tab_name = true
 
 # Draw borders around split panes.
-# pane_borders = false
+pane_borders = true
 
 # Keep split panes visually separated instead of sharing divider borders.
 pane_gaps = false
@@ -197,7 +210,7 @@ show_agent_labels_on_pane_borders = true
 # delivery = "off"
 # delay_seconds = 1
 
-delivery = "system"
+delivery = "terminal"
 [ui.toast.herdr]
 # position = "bottom-right"
 

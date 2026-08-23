@@ -7,7 +7,7 @@ binds {
     Mod+Shift+Comma { spawn "dms" "ipc" "call" "settings" "focusOrToggle"; }
     Mod+Shift+N { spawn "dms" "ipc" "call" "notepad" "toggle"; }
     Mod+Shift+W { spawn "dms" "ipc" "call" "window-rules" "toggle"; }
-    Mod+Space { spawn "dms" "ipc" "call" "spotlight-bar" "toggle"; }
+    Mod+Space { spawn "dms" "ipc" "call" "spotlight" "toggle"; }
     Mod+V { spawn "dms" "ipc" "call" "clipboard" "toggle"; }
     Mod+X { spawn "dms" "ipc" "call" "powermenu" "toggle"; }
     Mod+Y { spawn "dms" "ipc" "call" "dankdash" "wallpaper"; }

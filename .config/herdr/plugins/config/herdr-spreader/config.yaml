@@ -1,0 +1,30 @@
+workspaces:
+  - name: dev
+    root: ~
+    tabs:
+      - label: edit
+        panes:
+          - command: nvim
+      - label: docs
+        cwd: ./Documents/books
+        panes:
+          - command: zsh
+      - label: opencode
+        panes:
+          - command: opencode
+            focus: true
+      - label: vps
+        panes:
+          - command: zsh
+  - name: monitor
+    root: ~
+    tabs:
+      - label: lazydocker
+        panes:
+          - command: /usr/bin/distrobox-enter arch -- /usr/bin/lazydocker
+      - label: btop
+        panes:
+          - command: btop
+      - label: gpu
+        panes:
+          - command: nvtop

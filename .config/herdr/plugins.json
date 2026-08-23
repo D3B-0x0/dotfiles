@@ -1,0 +1,222 @@
+[
+  {
+    "plugin_id": "herdr-lazygit",
+    "name": "herdr-lazygit",
+    "version": "0.3.0",
+    "min_herdr_version": "0.7.0",
+    "description": "lazygit in a herdr split pane, with AI-assisted commit messages via custom commands.",
+    "manifest_path": "/home/ghost/.config/herdr/plugins/github/herdr-lazygit-b11d62e75f78/herdr-plugin.toml",
+    "plugin_root": "/home/ghost/.config/herdr/plugins/github/herdr-lazygit-b11d62e75f78",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "/bin/sh",
+          "scripts/install-runtime.sh"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "open",
+        "title": "Open lazygit",
+        "description": "Open lazygit in a split pane beside the current work (focus/toggle on repeat).",
+        "command": [
+          "bash",
+          "scripts/open-lazygit.sh"
+        ]
+      },
+      {
+        "id": "open-tab",
+        "title": "Open lazygit (tab)",
+        "description": "Open lazygit in its own tab (switch to it if already open, toggle off if focused).",
+        "command": [
+          "bash",
+          "scripts/open-lazygit-tab.sh"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "lazygit",
+        "title": "Git",
+        "placement": "split",
+        "command": [
+          "bash",
+          "-c",
+          "exec bash \"$HERDR_PLUGIN_ROOT/scripts/run-lazygit.sh\""
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "Crokily",
+      "repo": "herdr-lazygit",
+      "resolved_commit": "a13e12c99e5e469edd73165cabba413c2a2fd698",
+      "managed_path": "/home/ghost/.config/herdr/plugins/github/herdr-lazygit-b11d62e75f78",
+      "installed_unix_ms": 1785532933209
+    }
+  },
+  {
+    "plugin_id": "herdr-spreader",
+    "name": "Spreader",
+    "version": "0.1.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Apply tmuxinator-style project layouts from YAML",
+    "manifest_path": "/home/ghost/.config/herdr/plugins/github/herdr-spreader-f248c87aa2e2/herdr-plugin.toml",
+    "plugin_root": "/home/ghost/.config/herdr/plugins/github/herdr-spreader-f248c87aa2e2",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "build": [
+      {
+        "command": [
+          "cargo",
+          "build",
+          "--release"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "apply",
+        "title": "Apply layout",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "./target/release/herdr-spreader",
+          "apply"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "yuk1ty",
+      "repo": "herdr-spreader",
+      "resolved_commit": "5f76bc9eab02296e88d2707fa4c1cf0d8eabdb80",
+      "managed_path": "/home/ghost/.config/herdr/plugins/github/herdr-spreader-f248c87aa2e2",
+      "installed_unix_ms": 1785532911598
+    }
+  },
+  {
+    "plugin_id": "herdr-zoxide",
+    "name": "Zoxide Navigator",
+    "version": "0.1.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Browse zoxide directories with fzf preview — open as workspace, tab, or split. Config: $(herdr plugin config-dir herdr-zoxide)/config.toml",
+    "manifest_path": "/home/ghost/.config/herdr/plugins/github/herdr-zoxide-f7b96c313637/herdr-plugin.toml",
+    "plugin_root": "/home/ghost/.config/herdr/plugins/github/herdr-zoxide-f7b96c313637",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "actions": [
+      {
+        "id": "browse",
+        "title": "Browse zoxide directories",
+        "contexts": [
+          "global"
+        ],
+        "command": [
+          "bash",
+          "open-picker.sh"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "picker",
+        "title": "Zoxide",
+        "placement": "overlay",
+        "command": [
+          "bash",
+          "zoxide-picker.sh"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "den-tanui",
+      "repo": "herdr-zoxide",
+      "resolved_commit": "7be842fe84d8d017c80e54f8d7eb7f0f6ef28c44",
+      "managed_path": "/home/ghost/.config/herdr/plugins/github/herdr-zoxide-f7b96c313637",
+      "installed_unix_ms": 1785532924601
+    }
+  },
+  {
+    "plugin_id": "official.browser",
+    "name": "Browser",
+    "version": "0.1.0",
+    "min_herdr_version": "0.7.4",
+    "description": "Open and inspect real browser pages from Herdr.",
+    "manifest_path": "/home/ghost/.config/herdr/plugins/github/official.browser-ff2a44eccae9/herdr-plugin.toml",
+    "plugin_root": "/home/ghost/.config/herdr/plugins/github/official.browser-ff2a44eccae9",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "actions": [
+      {
+        "id": "open-localhost",
+        "title": "Open localhost in browser",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bun",
+          "run",
+          "src/actions/open-localhost.ts"
+        ]
+      },
+      {
+        "id": "status",
+        "title": "Browser status",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "bun",
+          "run",
+          "src/actions/status.ts"
+        ]
+      }
+    ],
+    "panes": [
+      {
+        "id": "browser",
+        "title": "Browser",
+        "placement": "split",
+        "command": [
+          "bun",
+          "run",
+          "src/viewer.ts"
+        ]
+      }
+    ],
+    "link_handlers": [
+      {
+        "id": "localhost",
+        "title": "Open in Herdr Browser",
+        "pattern": "^https?://(localhost|127\\.0\\.0\\.1|\\[::1\\])(:[0-9]+)?([/?#].*)?$",
+        "action": "open-localhost"
+      }
+    ],
+    "source": {
+      "kind": "github",
+      "owner": "ogulcancelik",
+      "repo": "herdr-browser",
+      "resolved_commit": "be6888b71cf4eb5939ee79a746bd1a1c22ade046",
+      "managed_path": "/home/ghost/.config/herdr/plugins/github/official.browser-ff2a44eccae9",
+      "installed_unix_ms": 1785532907445
+    }
+  }
+]

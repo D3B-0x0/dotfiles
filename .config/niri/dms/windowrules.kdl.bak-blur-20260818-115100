@@ -3,7 +3,12 @@
 
 // @id=wr_1786954601679176956 @name=ALL
 window-rule {
-    geometry-corner-radius 12
+    opacity 0.89
+    geometry-corner-radius 18
     clip-to-geometry true
     tiled-state true
+    background-effect {
+        blur true
+        xray true
+    }
 }
