@@ -1,30 +1,39 @@
 workspaces:
-  - name: dev
+  - name: Code
     root: ~
+    focus: true
     tabs:
-      - label: edit
+      - label: Editor
         panes:
-          - command: nvim
-      - label: docs
-        cwd: ./Documents/books
-        panes:
-          - command: zsh
-      - label: opencode
+          - command: v
+          - split: down
+            ratio: 0.7
+      - label: Agent
         panes:
           - command: opencode
             focus: true
-      - label: vps
+      - label: Shell
         panes:
-          - command: zsh
-  - name: monitor
+          - split: right
+            ratio: 0.5
+            command: kew 
+
+  - name: Monitor
     root: ~
     tabs:
-      - label: lazydocker
+      - label: Docker
         panes:
-          - command: /usr/bin/distrobox-enter arch -- /usr/bin/lazydocker
-      - label: btop
+          - command: lazydocker
+      - label: System
         panes:
           - command: btop
-      - label: gpu
+      - label: GPU
         panes:
           - command: nvtop
+
+  - name: Infra
+    root: ~
+    tabs:
+      - label: VPS
+        panes:
+          - command: ssh -4 vps

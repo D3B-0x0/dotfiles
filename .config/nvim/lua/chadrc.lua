@@ -60,6 +60,21 @@ local options = {
 
   mason = { cmd = true, pkgs = {
     "marksman",
+    -- Java
+    "jdtls",
+    "java-debug-adapter",
+    "java-test",
+    "google-java-format",
+    -- SQL
+    "sqls",
+    "sql-formatter",
+    "pg_format",
+    -- Formatters
+    "stylua",
+    "prettier",
+    "black",
+    "shfmt",
+    -- Other LSPs (install on demand, not auto)
   } },
 
 

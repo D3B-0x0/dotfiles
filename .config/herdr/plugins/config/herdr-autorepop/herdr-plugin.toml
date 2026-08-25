@@ -1,0 +1,9 @@
+id = "herdr-autorepop"
+name = "Auto Repopulate"
+version = "0.1.0"
+min_herdr_version = "0.7.0"
+description = "Re-launch apps in restored panes after server restart"
+platforms = ["linux", "macos"]
+
+[[startup]]
+command = ["/bin/bash", "/home/ghost/.config/herdr/plugins/config/herdr-spreader/scripts/repopulate.sh"]

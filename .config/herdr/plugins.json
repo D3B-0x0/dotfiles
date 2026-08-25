@@ -1,5 +1,30 @@
 [
   {
+    "plugin_id": "herdr-autorepop",
+    "name": "Auto Repopulate",
+    "version": "0.1.0",
+    "min_herdr_version": "0.7.0",
+    "description": "Re-launch apps in restored panes after server restart",
+    "manifest_path": "/home/ghost/.config/herdr/plugins/config/herdr-autorepop/herdr-plugin.toml",
+    "plugin_root": "/home/ghost/.config/herdr/plugins/config/herdr-autorepop",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "startup": [
+      {
+        "command": [
+          "/bin/bash",
+          "/home/ghost/.config/herdr/plugins/config/herdr-spreader/scripts/repopulate.sh"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "local"
+    }
+  },
+  {
     "plugin_id": "herdr-lazygit",
     "name": "herdr-lazygit",
     "version": "0.3.0",
