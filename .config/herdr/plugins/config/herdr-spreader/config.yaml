@@ -14,7 +14,7 @@ workspaces:
             focus: true
       - label: Shell
         panes:
-          - split: right
+          - split: down
             ratio: 0.5
             command: kew 
 

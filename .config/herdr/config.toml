@@ -63,7 +63,7 @@ prefix = "ctrl+a"
 
 # Prefix-mode actions
 # help = "prefix+?"
-# settings = "prefix+s"
+settings = "prefix+s"
 # detach = "prefix+q"
 # reload_config = "prefix+shift+r"
 # open_notification_target = "prefix+o"
@@ -135,7 +135,7 @@ command = "official.browser.status"
 description = "browser status"
 
 [[keys.command]]
-key = "prefix+s"
+key = "prefix+y"
 type = "plugin_action"
 command = "herdr-spreader.apply"
 description = "apply session layout"
